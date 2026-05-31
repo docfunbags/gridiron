@@ -1,11 +1,12 @@
 ---
 import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
 
 interface Props {
   title?: string;
 }
 
-const { title = 'Gridiron' } = Astro.props;
+const { title = 'Gridiron Brewery' } = Astro.props;
 ---
 
 <html lang="en">
@@ -17,7 +18,8 @@ const { title = 'Gridiron' } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body>
+  <body class="bg-zinc-950 antialiased">
+    <Navbar />
     <slot />
   </body>
 </html>
