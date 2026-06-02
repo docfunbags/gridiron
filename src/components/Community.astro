@@ -17,7 +17,7 @@ const initial = photos.slice(0, 6);
         <p class="reveal d1" style="max-width:480px;font-size:17px;line-height:1.65;color:#3a1f0e;">From live music to trivia nights to everyday visits, you've made this more than a place to grab a drink — you've made it a place to belong. Dogs, kids, and good people welcome.</p>
         <p class="reveal d2" style="margin-top:18px;">
           <a href="https://www.instagram.com/gridironbrewing/" target="_blank" rel="noopener"
-            style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5a2c14;text-decoration:none;">
+            style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5a2c14;text-decoration:none;">
             Tag us @gridironbrewing →
           </a>
         </p>
@@ -32,7 +32,7 @@ const initial = photos.slice(0, 6);
         ))}
       </div>
 
-      <!-- Lightbox overlay (mobile tap) -->
+      <!-- Lightbox overlay -->
       <div id="community-lightbox" aria-hidden="true">
         <img id="community-lightbox-img" src="" alt="" />
       </div>
@@ -46,8 +46,9 @@ const initial = photos.slice(0, 6);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 1fr;
-    gap: 8px;
+    gap: 20px;
     overflow: visible;
+    padding: 12px;
   }
 
   /* Force equal square cells */
@@ -63,17 +64,30 @@ const initial = photos.slice(0, 6);
     grid-column: 1;
   }
 
+  /* Polaroid frame */
   .mosaic-item {
     aspect-ratio: 1;
     position: relative;
     z-index: 1;
-    overflow: hidden;
     cursor: zoom-in;
+    background: #fff;
+    padding: 7px 7px 24px;
+    box-shadow: 2px 3px 10px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.10);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
+  /* Scattered rotation — each nth gives a different slight tilt */
+  .mosaic-item:nth-child(1) { transform: rotate(-1.5deg); }
+  .mosaic-item:nth-child(2) { transform: rotate( 1.2deg); }
+  .mosaic-item:nth-child(3) { transform: rotate(-0.6deg); }
+  .mosaic-item:nth-child(4) { transform: rotate( 2.0deg); }
+  .mosaic-item:nth-child(5) { transform: rotate(-1.8deg); }
+  .mosaic-item:nth-child(6) { transform: rotate( 0.8deg); }
+
   .mosaic-item:hover {
-    overflow: visible;
+    transform: rotate(0deg) scale(1.08) !important;
     z-index: 10;
+    box-shadow: 6px 14px 32px rgba(0,0,0,0.28);
   }
 
   .mosaic-item img {
@@ -81,17 +95,12 @@ const initial = photos.slice(0, 6);
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
-                box-shadow 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
-                opacity 0.5s ease;
+    opacity: 1;
+    transition: opacity 0.6s ease;
   }
 
   .mosaic-item img.fading {
     opacity: 0;
-  }
-
-  .mosaic-item:hover img {
-    filter: brightness(0.85);
   }
 
   /* Lightbox */
@@ -105,80 +114,83 @@ const initial = photos.slice(0, 6);
     justify-content: center;
     cursor: zoom-out;
   }
-  #community-lightbox.open {
-    display: flex;
-  }
+  #community-lightbox.open { display: flex; }
   #community-lightbox-img {
     max-width: 92vw;
     max-height: 86vh;
     object-fit: contain;
-    border-radius: 4px;
+    border-radius: 2px;
     box-shadow: 0 24px 64px rgba(0,0,0,0.6);
   }
-
-  .mosaic-item { cursor: zoom-in; }
 </style>
 
 <script>
-  const lightbox = document.getElementById('community-lightbox');
+  const lightbox   = document.getElementById('community-lightbox');
   const lightboxImg = document.getElementById('community-lightbox-img') as HTMLImageElement | null;
-  const mosaic = document.getElementById('community-mosaic') as HTMLElement | null;
-
+  const mosaic     = document.getElementById('community-mosaic') as HTMLElement | null;
   const pool: { src: string; alt: string }[] = JSON.parse(mosaic?.dataset.pool || '[]');
 
-  function bindLightbox(item: Element) {
-    item.addEventListener('click', () => {
-      if (!lightbox || !lightboxImg) return;
-      lightboxImg.src = item.getAttribute('data-src') || '';
-      lightboxImg.alt = item.getAttribute('data-alt') || '';
-      lightbox.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
+  let paused = false;
+
+  // ── Lightbox ──────────────────────────────────────────────
+  function openLightbox(src: string, alt: string) {
+    if (!lightbox || !lightboxImg) return;
+    paused = true;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt;
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    paused = false;
   }
 
   if (mosaic) {
-    mosaic.querySelectorAll('.mosaic-item').forEach(bindLightbox);
+    mosaic.querySelectorAll('.mosaic-item').forEach((item) => {
+      item.addEventListener('click', () =>
+        openLightbox(item.getAttribute('data-src') || '', item.getAttribute('data-alt') || '')
+      );
+    });
+    // Pause on hover over the whole mosaic
+    mosaic.addEventListener('mouseenter', () => { paused = true; });
+    mosaic.addEventListener('mouseleave', () => { paused = false; });
   }
 
-  if (lightbox && lightboxImg) {
-    lightbox.addEventListener('click', () => {
-      lightbox.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { lightbox.classList.remove('open'); document.body.style.overflow = ''; }
-    });
-  }
+  lightbox?.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
-  // Cycle one slot every 2.5 s through the full pool
+  // ── Cycling ───────────────────────────────────────────────
   if (mosaic && pool.length > 6) {
     const items = Array.from(mosaic.querySelectorAll('.mosaic-item')) as HTMLElement[];
     let slotIdx = 0;
     let queue = pool.filter(p => !new Set(items.map(el => el.getAttribute('data-src'))).has(p.src));
 
     setInterval(() => {
+      if (paused) return;
+
       const slot = items[slotIdx % items.length];
       slotIdx++;
 
       if (queue.length === 0) queue = [...pool];
-      const nextIdx = Math.floor(Math.random() * queue.length);
-      const next = queue.splice(nextIdx, 1)[0];
+      const next = queue.splice(Math.floor(Math.random() * queue.length), 1)[0];
       if (!next) return;
 
       const img = slot.querySelector('img') as HTMLImageElement | null;
       if (!img) return;
 
-      // Add class → CSS transition fades img to opacity:0
       img.classList.add('fading');
-
       setTimeout(() => {
         img.src = next.src;
         img.alt = next.alt;
         slot.setAttribute('data-src', next.src);
         slot.setAttribute('data-alt', next.alt);
-        // Double rAF ensures browser paints the new src at opacity 0 before fading in
         requestAnimationFrame(() => requestAnimationFrame(() => img.classList.remove('fading')));
-      }, 500);
-    }, 2500);
+      }, 600);
+    }, 4500);
   }
 </script>
