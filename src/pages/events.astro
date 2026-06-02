@@ -89,7 +89,7 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
               )}
             </div>
             <div class="event-meta">
-              {ev.when}<br /><span class="free">{ev.cover}</span>
+              {ev.when}{ev.cover && <><br /><span class="free">{ev.cover}</span></>}
             </div>
           </div>
         ))}
@@ -119,7 +119,7 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
             <p>{ev.desc}</p>
           </div>
           <div class="event-meta">
-            {ev.when}<br /><span class="free">{ev.cover}</span>
+            {ev.when}{ev.cover && <><br /><span class="free">{ev.cover}</span></>}
           </div>
         </div>
       ))}

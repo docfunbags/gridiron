@@ -22,7 +22,7 @@ const recurring = eventsData.events.filter(e => e.recurring).slice(0, 3);
           <p>{ev.desc}</p>
         </div>
         <div class="event-meta">
-          {ev.when}<br /><span class="free">{ev.cover}</span>
+          {ev.when}{ev.cover && <><br /><span class="free">{ev.cover}</span></>}
         </div>
       </div>
     ))}
