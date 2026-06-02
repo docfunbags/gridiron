@@ -66,14 +66,11 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
           <div class={`event-row reveal${i > 0 ? ` d${Math.min(i, 3)}` : ''}`}>
             <!-- Thumbnail column -->
             <div class="ev-thumb" data-src={ev.image || ''} data-alt={ev.title}>
-              {ev.image
-                ? <img src={ev.image} alt={ev.title} loading="lazy" decoding="async" />
-                : <div class="ev-thumb-date"><span class="d">{ev.day}</span><span class="m">{ev.month}</span></div>
-              }
+              <img src={ev.image || '/assets/events/placeholder.svg'} alt={ev.image ? ev.title : ''} loading="lazy" decoding="async" />
             </div>
             <!-- Body: date badge + text -->
             <div class="event-body">
-              {ev.image && ev.day && (
+              {ev.day && (
                 <div class="ev-date-badge">
                   <span class="d">{ev.day}</span>
                   <span class="m">{ev.month}</span>
@@ -108,13 +105,10 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
       {recurring.map((ev, i) => (
         <div class={`event-row reveal${i > 0 ? ` d${Math.min(i, 3)}` : ''}`}>
           <div class="ev-thumb" data-src={ev.image || ''} data-alt={ev.title}>
-            {ev.image
-              ? <img src={ev.image} alt={ev.title} loading="lazy" decoding="async" />
-              : <span class="rec-icon">↻</span>
-            }
+            <img src={ev.image || '/assets/events/placeholder.svg'} alt={ev.image ? ev.title : ''} loading="lazy" decoding="async" />
           </div>
           <div class="event-body">
-            {ev.image && <div class="ev-rec-badge">↻ Weekly</div>}
+            <div class="ev-rec-badge">↻ Weekly</div>
             <h4>{ev.title}</h4>
             <p>{ev.desc}</p>
           </div>
@@ -193,6 +187,7 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
     justify-content: center;
     background: var(--paper-2, #e8dcc8);
   }
+  .ev-thumb[data-src=""] { cursor: default; }
   .ev-thumb img {
     width: 100%;
     height: 100%;

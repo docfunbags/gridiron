@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 300">
+  <!-- background -->
+  <rect width="450" height="300" fill="#1c130c"/>
+  <!-- subtle gridiron grid -->
+  <g stroke="#c17a2b" stroke-width="0.6" opacity="0.12">
+    <line x1="0" y1="60" x2="450" y2="60"/>
+    <line x1="0" y1="120" x2="450" y2="120"/>
+    <line x1="0" y1="180" x2="450" y2="180"/>
+    <line x1="0" y1="240" x2="450" y2="240"/>
+    <line x1="90" y1="0" x2="90" y2="300"/>
+    <line x1="180" y1="0" x2="180" y2="300"/>
+    <line x1="270" y1="0" x2="270" y2="300"/>
+    <line x1="360" y1="0" x2="360" y2="300"/>
+  </g>
+  <!-- pint glass body -->
+  <polygon points="193,68 257,68 249,232 201,232" fill="none" stroke="#c17a2b" stroke-width="2.5" stroke-linejoin="round" opacity="0.55"/>
+  <!-- foam bubbles -->
+  <path d="M194,85 Q205,70 216,85 Q227,100 238,85 Q246,74 256,74" fill="none" stroke="#c17a2b" stroke-width="2" opacity="0.55"/>
+  <!-- handle -->
+  <path d="M249,128 Q282,128 282,160 Q282,192 249,192" fill="none" stroke="#c17a2b" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>
+</svg>
