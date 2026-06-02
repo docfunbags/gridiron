@@ -8,7 +8,7 @@ interface Props {
   activeNav?: string;
 }
 
-const { title = 'Gridiron Brewing Co. — Hampton, New Brunswick', activeNav } = Astro.props;
+const { title = 'Gridiron Brewing — Hampton, New Brunswick', activeNav } = Astro.props;
 ---
 
 <html lang="en">
@@ -18,11 +18,11 @@ const { title = 'Gridiron Brewing Co. — Hampton, New Brunswick', activeNav } =
     <link rel="apple-touch-icon" href="/assets/logos/logo.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content="Gridiron Brewing Co. — Small-batch craft beer brewed in Hampton, New Brunswick. Taproom on the Kennebecasis. Cold pints, cozy place." />
+    <meta name="description" content="Gridiron Brewing — Small-batch craft beer brewed in Hampton, New Brunswick. Taproom on the Kennebecasis. Cold pints, cozy place." />
     <title>{title}</title>
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Gridiron Brewing Co." />
+    <meta property="og:site_name" content="Gridiron Brewing" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content="Small-batch craft beer brewed in Hampton, New Brunswick. Cold pints, cozy place." />
     <meta property="og:image" content="/assets/logos/logo.png" />

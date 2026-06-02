@@ -17,7 +17,7 @@ function gcalUrl(ev: { title: string; desc: string; calDate: string }): string {
     text: ev.title,
     dates: `${dt}/${end}`,
     details: ev.desc,
-    location: 'Gridiron Brewing Co., Hampton, NB',
+    location: 'Gridiron Brewing, Hampton, NB',
   });
   return `https://calendar.google.com/calendar/render?${p.toString()}`;
 }
@@ -37,7 +37,7 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
     `DTEND:${fmt(end)}`,
     `SUMMARY:${ev.title}`,
     `DESCRIPTION:${ev.desc.replace(/\n/g, '\\n')}`,
-    'LOCATION:Gridiron Brewing Co., Hampton, NB',
+    'LOCATION:Gridiron Brewing, Hampton, NB',
     `UID:${uid}`,
     'END:VEVENT',
     'END:VCALENDAR',
@@ -46,7 +46,7 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
 }
 ---
 
-<Layout title="Events & Music — Gridiron Brewing Co." activeNav="Events">
+<Layout title="Events & Music — Gridiron Brewing" activeNav="Events">
 
   <section class="page-hero grain">
     <span class="kicker">What's On · Hampton, NB</span>
