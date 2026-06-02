@@ -1,12 +1,7 @@
 ---
-const photos = [
-  { src: '/assets/photos/live-music-deck.png',      alt: 'Live music on the Gridiron deck'           },
-  { src: '/assets/photos/crowded-bar.png',           alt: 'Packed house at Gridiron'                  },
-  { src: '/assets/photos/card-game-beers.png',       alt: 'Friends playing cards with Gridiron beers' },
-  { src: '/assets/photos/beers-pumpkins.png',        alt: 'Fall beers at Gridiron'                    },
-  { src: '/assets/photos/rottweiler-trophy.png',     alt: 'Gridiron mascot with trophy'               },
-  { src: '/assets/photos/dog-sunflower-costume.png', alt: 'Dog in sunflower costume at Gridiron'      },
-];
+import communityData from '../data/community.json';
+const photos = communityData.photos;
+const initial = photos.slice(0, 6);
 ---
 
 <section class="band-dark">
@@ -29,13 +24,14 @@ const photos = [
       </div>
 
       <!-- Photo mosaic -->
-      <div class="community-mosaic reveal d1">
-        {photos.map(p => (
+      <div class="community-mosaic reveal d1" id="community-mosaic">
+        {initial.map(p => (
           <div class="mosaic-item" data-src={p.src} data-alt={p.alt}>
             <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
           </div>
         ))}
       </div>
+      <script type="application/json" id="community-pool">{JSON.stringify(photos)}</script>
 
       <!-- Lightbox overlay (mobile tap) -->
       <div id="community-lightbox" aria-hidden="true">
@@ -87,7 +83,8 @@ const photos = [
     object-fit: cover;
     display: block;
     transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
-                box-shadow 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+                box-shadow 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+                opacity 0.6s ease;
   }
 
   .mosaic-item:hover img {
@@ -120,32 +117,61 @@ const photos = [
 </style>
 
 <script>
-  const items = document.querySelectorAll('.mosaic-item');
   const lightbox = document.getElementById('community-lightbox');
-  const lightboxImg = document.getElementById('community-lightbox-img');
+  const lightboxImg = document.getElementById('community-lightbox-img') as HTMLImageElement | null;
+  const mosaic = document.getElementById('community-mosaic');
+  const poolEl = document.getElementById('community-pool');
+
+  const pool: { src: string; alt: string }[] = poolEl ? JSON.parse(poolEl.textContent || '[]') : [];
+
+  function bindLightbox(item: Element) {
+    item.addEventListener('click', () => {
+      if (!lightbox || !lightboxImg) return;
+      lightboxImg.src = item.getAttribute('data-src') || '';
+      lightboxImg.alt = item.getAttribute('data-alt') || '';
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+
+  if (mosaic) {
+    mosaic.querySelectorAll('.mosaic-item').forEach(bindLightbox);
+  }
 
   if (lightbox && lightboxImg) {
-    items.forEach(item => {
-      item.addEventListener('click', () => {
-        const src = item.getAttribute('data-src') || '';
-        const alt = item.getAttribute('data-alt') || '';
-        lightboxImg.src = src;
-        lightboxImg.alt = alt;
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      });
-    });
-
     lightbox.addEventListener('click', () => {
       lightbox.classList.remove('open');
       document.body.style.overflow = '';
     });
-
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        lightbox.classList.remove('open');
-        document.body.style.overflow = '';
-      }
+      if (e.key === 'Escape') { lightbox.classList.remove('open'); document.body.style.overflow = ''; }
     });
+  }
+
+  // Cycle one random slot every 3 seconds through the pool
+  if (mosaic && pool.length > 6) {
+    const shown = new Set(Array.from(mosaic.querySelectorAll('.mosaic-item')).map(el => el.getAttribute('data-src')));
+
+    setInterval(() => {
+      const items = Array.from(mosaic.querySelectorAll('.mosaic-item'));
+      const slot = items[Math.floor(Math.random() * items.length)] as HTMLElement;
+      const currentSrc = slot.getAttribute('data-src');
+      const candidates = pool.filter(p => p.src !== currentSrc && !shown.has(p.src));
+      const next = (candidates.length ? candidates : pool.filter(p => p.src !== currentSrc))[Math.floor(Math.random() * (candidates.length || pool.length - 1))];
+      if (!next) return;
+
+      shown.delete(currentSrc || '');
+      shown.add(next.src);
+
+      slot.style.transition = 'opacity 0.6s ease';
+      slot.style.opacity = '0';
+      setTimeout(() => {
+        const img = slot.querySelector('img') as HTMLImageElement | null;
+        if (img) { img.src = next.src; img.alt = next.alt; }
+        slot.setAttribute('data-src', next.src);
+        slot.setAttribute('data-alt', next.alt);
+        slot.style.opacity = '1';
+      }, 600);
+    }, 3000);
   }
 </script>

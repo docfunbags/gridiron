@@ -138,3 +138,27 @@ collections:
                 widget: string
                 default: "No Fee"
                 hint: "e.g. No Fee, $10 at the door, Free with RSVP"
+
+  # ── COMMUNITY PHOTOS ────────────────────────────────────
+  - name: community
+    label: "📸 Community Photos"
+    files:
+      - name: community
+        label: Photo Pool
+        file: src/data/community.json
+        fields:
+          - label: Photos
+            name: photos
+            widget: list
+            label_singular: Photo
+            summary: "{{fields.src}}"
+            fields:
+              - label: "Photo"
+                name: src
+                widget: image
+                hint: "Upload or select a photo from the media library."
+
+              - label: "Alt Text"
+                name: alt
+                widget: string
+                hint: "Short description of the photo for accessibility."
