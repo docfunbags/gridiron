@@ -282,5 +282,6 @@ img { display: block; max-width: 100%; }
 @media (max-width: 520px) {
   .beer-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
   .foot-inner { grid-template-columns: 1fr; gap: 28px; }
+  .site-footer .footlogo { height: 72px; }
   .hero .inner { padding-bottom: 60px; }
 }
