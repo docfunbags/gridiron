@@ -1,6 +1,7 @@
 ---
 import eventsData from '../data/events.json';
 const upcoming = eventsData.events.filter(e => !e.recurring).slice(0, 4);
+const recurring = eventsData.events.filter(e => e.recurring).slice(0, 3);
 ---
 
 <section class="band-paper2 section" id="events">
@@ -26,7 +27,85 @@ const upcoming = eventsData.events.filter(e => !e.recurring).slice(0, 4);
       </div>
     ))}
   </div>
+
+  <!-- Weekly regulars strip -->
+  {recurring.length > 0 && (
+    <div class="weekly-strip reveal d2">
+      <span class="weekly-label">Every week</span>
+      {recurring.map((ev) => (
+        <div class="weekly-item">
+          <span class="rec-icon">↻</span>
+          <span class="weekly-title">{ev.title}</span>
+          <span class="weekly-when">{ev.when}</span>
+        </div>
+      ))}
+    </div>
+  )}
+
   <div style="text-align:center;margin-top:40px;">
     <a class="btn btn-amber reveal" href="/events">Full Calendar →</a>
   </div>
 </section>
+
+<style>
+  .weekly-strip {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-top: 32px;
+    border-top: 1px solid var(--rule, rgba(0,0,0,0.12));
+    padding-top: 20px;
+  }
+  .weekly-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-right: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .weekly-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-left: 1px solid var(--rule, rgba(0,0,0,0.12));
+  }
+  .rec-icon {
+    font-size: 14px;
+    color: var(--amber);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .weekly-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .weekly-when {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted, rgba(26,20,10,0.55));
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .weekly-strip {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .weekly-item {
+      border-left: none;
+      padding: 4px 0;
+    }
+    .weekly-label {
+      margin-bottom: 8px;
+    }
+  }
+</style>
