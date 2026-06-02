@@ -43,15 +43,24 @@ const { title = 'Gridiron Brewing Co. — Hampton, New Brunswick', activeNav } =
   </head>
   <body>
     <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
+      window.addEventListener('load', () => {
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on("init", user => {
+            if (!user) {
+              window.netlifyIdentity.on("login", () => {
+                document.location.href = "/admin/";
+              });
+            }
+          });
+          // Auto-open widget if invite/recovery token is in URL
+          if (window.location.hash && (
+            window.location.hash.includes('invite_token') ||
+            window.location.hash.includes('recovery_token')
+          )) {
+            window.netlifyIdentity.open();
           }
-        });
-      }
+        }
+      });
     </script>
     <Navbar activeNav={activeNav} />
     <slot />
