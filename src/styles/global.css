@@ -162,7 +162,7 @@ img { display: block; max-width: 100%; }
 .event-row:hover { padding-left: 12px; }
 .event-date { font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: .85; }
 .event-date .d { font-size: 42px; display: block; }
-.event-date .m { font-size: 16px; color: var(--amber); letter-spacing: .04em; display: block; }
+.event-date .m { font-size: 22px; color: var(--amber); letter-spacing: .04em; display: block; margin-top: 6px; }
 .event-body h4 { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 22px; margin-bottom: 4px; }
 .event-body p { font-size: 14px; color: var(--ink-2); }
 .event-meta { font-family: 'Archivo', sans-serif; font-size: 15px; letter-spacing: .01em; color: var(--ink-2); text-align: right; }
