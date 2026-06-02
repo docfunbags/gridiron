@@ -64,12 +64,8 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
       <div class="event-list">
         {upcoming.map((ev, i) => (
           <div class={`event-row reveal${i > 0 ? ` d${Math.min(i, 3)}` : ''}`}>
-            {ev.image && (
-              <div class="event-thumb">
-                <img src={ev.image} alt={ev.title} loading="lazy" />
-              </div>
-            )}
-            <div class="event-date">
+            <div class={`event-date${ev.image ? ' has-img' : ''}`}>
+              {ev.image && <img src={ev.image} alt="" aria-hidden="true" />}
               <span class="d">{ev.day}</span>
               <span class="m">{ev.month}</span>
             </div>
@@ -102,12 +98,8 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
     <div class="event-list">
       {recurring.map((ev, i) => (
         <div class={`event-row reveal${i > 0 ? ` d${Math.min(i, 3)}` : ''}`}>
-          {ev.image && (
-            <div class="event-thumb">
-              <img src={ev.image} alt={ev.title} loading="lazy" />
-            </div>
-          )}
-          <div class="event-date recurring-badge">
+          <div class={`event-date recurring-badge${ev.image ? ' has-img' : ''}`}>
+            {ev.image && <img src={ev.image} alt="" aria-hidden="true" />}
             <span class="rec-icon">↻</span>
           </div>
           <div class="event-body">
@@ -147,31 +139,53 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
 </script>
 
 <style>
+  /* Image overlaid in the date column — keeps the 3-column grid intact */
+  .event-date.has-img {
+    position: relative;
+    height: 90px;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .event-date.has-img img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  /* Dark scrim so the date/icon is readable */
+  .event-date.has-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.48);
+    z-index: 1;
+  }
+  .event-date.has-img .d,
+  .event-date.has-img .m,
+  .event-date.has-img .rec-icon {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+  }
+  .event-date.has-img .m {
+    color: var(--amber-bright, #f5a623);
+  }
+
   .recurring-badge {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
   }
   .rec-icon {
     font-size: 32px;
     color: var(--amber);
     line-height: 1;
-  }
-
-  /* Thumbnail */
-  .event-thumb {
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-    border-radius: 6px;
-    overflow: hidden;
-    order: -1;
-  }
-  .event-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
   }
 
   /* Calendar add links */
@@ -197,12 +211,5 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
   .cal-btn:hover {
     background: var(--amber);
     color: var(--ink);
-  }
-
-  @media (max-width: 600px) {
-    .event-thumb {
-      width: 60px;
-      height: 60px;
-    }
   }
 </style>
