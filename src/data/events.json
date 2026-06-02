@@ -156,6 +156,17 @@
     },
     {
       "month": "",
+      "desc": "Delicious artisan pizza made on site every Friday. You will not regret getting one.",
+      "cover": "No Fee",
+      "title": "Stoked Pizza Fridays",
+      "when": "Every Friday · 12:00 PM",
+      "image": "/assets/food/stoked-pizza.png",
+      "calDate": "",
+      "day": "",
+      "recurring": true
+    },
+    {
+      "month": "",
       "desc": "$1 off every beer when you bring your pup. Water and treats provided. Always a pet-friendly space.",
       "cover": "No Fee",
       "title": "Deck Dogs Saturdays",
@@ -172,17 +183,6 @@
       "title": "Beer & Caesar Sundays",
       "when": "Every Sunday · 12:00 PM",
       "image": "/assets/photos/bloody-mary.png",
-      "calDate": "",
-      "day": "",
-      "recurring": true
-    },
-    {
-      "month": "",
-      "desc": "Delicious artisan pizza made on site every Friday. You will not regret getting one.",
-      "cover": "No Fee",
-      "title": "Stoked Pizza Fridays",
-      "when": "Every Friday · 12:00 PM",
-      "image": "/assets/food/stoked-pizza.png",
       "calDate": "",
       "day": "",
       "recurring": true
