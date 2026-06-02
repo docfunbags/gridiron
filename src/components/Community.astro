@@ -148,31 +148,39 @@ const initial = photos.slice(0, 6);
     });
   }
 
-  // Cycle one random slot every 3 seconds through the pool
+  // Cycle one slot every 2.5 s, rotating through slots in order so all 6 update evenly
   if (mosaic && pool.length > 6) {
-    const shown = new Set(Array.from(mosaic.querySelectorAll('.mosaic-item')).map(el => el.getAttribute('data-src')));
+    const items = Array.from(mosaic.querySelectorAll('.mosaic-item')) as HTMLElement[];
+    let slotIdx = 0;
+    // Track which pool entries are currently visible
+    const shown = new Set(items.map(el => el.getAttribute('data-src') as string));
+    // Keep an unshown queue; refill from full pool when exhausted
+    let queue = pool.filter(p => !shown.has(p.src));
 
     const cycleTimer = setInterval(() => {
-      const items = Array.from(mosaic.querySelectorAll('.mosaic-item'));
-      const slot = items[Math.floor(Math.random() * items.length)] as HTMLElement;
-      const currentSrc = slot.getAttribute('data-src');
-      const candidates = pool.filter(p => p.src !== currentSrc && !shown.has(p.src));
-      const next = (candidates.length ? candidates : pool.filter(p => p.src !== currentSrc))[Math.floor(Math.random() * (candidates.length || pool.length - 1))];
+      const slot = items[slotIdx % items.length];
+      slotIdx++;
+
+      if (queue.length === 0) queue = [...pool];
+      const nextIdx = Math.floor(Math.random() * queue.length);
+      const next = queue.splice(nextIdx, 1)[0];
       if (!next) return;
 
-      shown.delete(currentSrc || '');
+      shown.delete(slot.getAttribute('data-src') || '');
       shown.add(next.src);
 
-      slot.style.transition = 'opacity 0.6s ease';
-      slot.style.opacity = '0';
+      // Animate via the img element — it already has opacity in its CSS transition
+      const img = slot.querySelector('img') as HTMLImageElement | null;
+      if (!img) return;
+      img.style.opacity = '0';
       setTimeout(() => {
-        const img = slot.querySelector('img') as HTMLImageElement | null;
-        if (img) { img.src = next.src; img.alt = next.alt; }
+        img.src = next.src;
+        img.alt = next.alt;
         slot.setAttribute('data-src', next.src);
         slot.setAttribute('data-alt', next.alt);
-        slot.style.opacity = '1';
-      }, 600);
-    }, 3000);
+        img.style.opacity = '1';
+      }, 650);
+    }, 2500);
     window.addEventListener('beforeunload', () => clearInterval(cycleTimer), { once: true });
   }
 </script>
