@@ -15,7 +15,7 @@ const photos = communityData.photos;
   <section class="section">
     <div class="gallery-grid">
       {photos.map((photo) => (
-        <div class="gallery-item" data-src={photo.src} data-alt={photo.alt}>
+        <div class="gallery-item" role="button" tabindex="0" data-src={photo.src} data-alt={photo.alt}>
           <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
         </div>
       ))}
@@ -58,11 +58,16 @@ const photos = communityData.photos;
 
   function open(index: number) {
     if (!lightbox || !lbImg) return;
-    show(index);
+    current = (index + items.length) % items.length;
     openLightbox(lightbox, lbImg, items[current].dataset.src || '', items[current].dataset.alt || '');
   }
 
-  items.forEach((el, i) => el.addEventListener('click', () => open(i)));
+  items.forEach((el, i) => {
+    el.addEventListener('click', () => open(i));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); }
+    });
+  });
   lbPrev?.addEventListener('click', (e) => { e.stopPropagation(); show(current - 1); });
   lbNext?.addEventListener('click', (e) => { e.stopPropagation(); show(current + 1); });
   lightbox?.addEventListener('click', () => { if (lightbox) closeLightbox(lightbox); });

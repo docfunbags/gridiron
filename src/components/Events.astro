@@ -4,7 +4,8 @@ const upcoming = eventsData.events.filter(e => !e.recurring).slice(0, 4);
 const recurring = eventsData.events.filter(e => e.recurring).slice(0, 3);
 ---
 
-<section class="band-paper2 section" id="events">
+<section class="band-paper2" id="events">
+  <div class="section">
   <div class="section-head">
     <span class="kicker reveal">Live At Gridiron</span>
     <h2 class="reveal d1">Events &amp; Music</h2>
@@ -44,6 +45,7 @@ const recurring = eventsData.events.filter(e => e.recurring).slice(0, 3);
 
   <div style="text-align:center;margin-top:40px;">
     <a class="btn btn-amber reveal" href="/events">Full Calendar →</a>
+  </div>
   </div>
 </section>
 
@@ -94,7 +96,7 @@ const recurring = eventsData.events.filter(e => e.recurring).slice(0, 3);
     color: var(--ink-3);
     white-space: nowrap;
   }
-  @media (max-width: 640px) {
+  @media (max-width: 520px) {
     .weekly-strip {
       flex-direction: column;
       align-items: flex-start;

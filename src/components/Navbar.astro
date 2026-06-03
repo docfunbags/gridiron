@@ -17,14 +17,14 @@ const navLinks = [
     <a class="brand" href="/">
       <img class="wordmark" src="/assets/logos/logo-nav.webp" alt="Gridiron Brewing" width="950" height="399" />
     </a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="nav-links">
       {navLinks.map(({ label, href }) => (
         <a href={href} class={activeNav === label ? 'active' : ''}>{label}</a>
       ))}
     </nav>
     <div class="nav-cta">
       <a class="btn btn-amber btn-sm" href="/visit#directions">Find Us →</a>
-      <button class="menu-btn" aria-label="Menu">Menu</button>
+      <button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">Menu</button>
     </div>
   </div>
 </header>
@@ -38,12 +38,18 @@ const navLinks = [
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  const menuBtn = document.querySelector('.menu-btn');
+  const menuBtn = document.querySelector('.menu-btn') as HTMLButtonElement | null;
   const navLinks = document.querySelector('.nav-links');
   if (menuBtn && navLinks) {
-    menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+    menuBtn.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
+    });
     navLinks.querySelectorAll('a').forEach(a =>
-      a.addEventListener('click', () => navLinks.classList.remove('open'))
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      })
     );
   }
 </script>

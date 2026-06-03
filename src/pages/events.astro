@@ -133,7 +133,8 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
   )}
 
   <!-- Recurring weekly events -->
-  <section class="band-paper2 section">
+  <section class="band-paper2">
+    <div class="section">
     <div class="section-head">
       <span class="kicker reveal">Every Week</span>
       <h2 class="reveal d1">Regular Nights</h2>
@@ -155,6 +156,7 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
           </div>
         </div>
       ))}
+    </div>
     </div>
   </section>
 
@@ -317,7 +319,7 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
   }
 
   /* Mobile */
-  @media (max-width: 640px) {
+  @media (max-width: 520px) {
     .ev-list-img .event-row {
       grid-template-columns: 90px 1fr;
       gap: 14px;

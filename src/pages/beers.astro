@@ -49,14 +49,15 @@ const beers = [...allBeers]
     </div>
   </div>
 
-  <section class="band-paper2 section" style="padding-top:56px;padding-bottom:56px;">
+  <section class="band-paper2">
+    <div class="section-sm">
     <div class="beer-grid" data-tap-grid>
       {beers.map((beer) => (
         <article class={`beer-card${!beer.onTap ? ' off-tap' : ''}`} data-style={beer.styleCat} data-abv={beer.abv} data-ontap={beer.onTap}>
           <div class="beer-can" style="background:#e8d9b9;">
             <div class="can" style={`background:${beer.canBg};`}>
-              <span class="cn" style={beer.light ? 'color:#e7d3a8;mix-blend-mode:normal;' : ''}>
-                {beer.cn[0]}<br />{beer.cn[1]}
+              <span class="cn" style={beer.lightText ? 'color:#e7d3a8;mix-blend-mode:normal;' : ''}>
+                {beer.canLabel[0]}<br />{beer.canLabel[1]}
               </span>
             </div>
           </div>
@@ -79,10 +80,11 @@ const beers = [...allBeers]
       ))}
     </div>
     <div class="no-results">No beers match those filters — try loosening up.</div>
+    </div>
   </section>
   </div>
 
-  <section class="section" style="padding-top:72px;padding-bottom:72px;">
+  <section class="section-md">
     <div style="max-width:860px;">
 
       <h2 class="display reveal" style="font-size:clamp(36px,4.6vw,58px);margin:0 0 48px;line-height:0.92;">Also On The Menu</h2>

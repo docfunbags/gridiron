@@ -14,8 +14,6 @@ export interface Beer {
   onTap: boolean;
   // Generated
   canBg: string;
-  cn: [string, string];
-  light: boolean;
 }
 
 function lighten(hex: string): string {
@@ -26,9 +24,7 @@ function lighten(hex: string): string {
   return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
 }
 
-export const beers: Beer[] = (beersData.beers as Omit<Beer,'canBg'|'cn'|'light'>[]).map(b => ({
+export const beers: Beer[] = (beersData.beers as Omit<Beer,'canBg'>[]).map(b => ({
   ...b,
   canBg: `linear-gradient(${lighten(b.canColor)},${b.canColor})`,
-  cn: b.canLabel as [string, string],
-  light: b.lightText,
 }));

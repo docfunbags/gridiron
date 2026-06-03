@@ -23,14 +23,14 @@ const initial = photos.slice(0, 6);
       <!-- Photo mosaic — data-pool carries the full JSON pool for client-side cycling -->
       <div class="community-mosaic reveal d1" id="community-mosaic" data-pool={JSON.stringify(photos)}>
         {initial.map(p => (
-          <div class="mosaic-item" data-src={p.src} data-alt={p.alt}>
+          <div class="mosaic-item" role="button" tabindex="0" data-src={p.src} data-alt={p.alt}>
             <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
           </div>
         ))}
       </div>
 
       <!-- Lightbox overlay -->
-      <div id="community-lightbox" aria-hidden="true">
+      <div id="community-lightbox" aria-hidden="true" role="dialog" aria-modal="true">
         <img id="community-lightbox-img" src="" alt="" />
       </div>
 
@@ -133,10 +133,17 @@ const initial = photos.slice(0, 6);
 
   if (mosaic) {
     mosaic.querySelectorAll('.mosaic-item').forEach((item) => {
-      item.addEventListener('click', () => {
+      const activate = () => {
         if (!lightbox || !lightboxImg) return;
         paused = true;
         openLightbox(lightbox, lightboxImg, item.getAttribute('data-src') || '', item.getAttribute('data-alt') || '');
+      };
+      item.addEventListener('click', activate);
+      item.addEventListener('keydown', (e) => {
+        if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+          e.preventDefault();
+          activate();
+        }
       });
     });
     mosaic.addEventListener('mouseenter', () => { paused = true; });
