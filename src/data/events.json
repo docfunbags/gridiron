@@ -6,7 +6,7 @@
       "cover": "",
       "title": "Stoked Pizza — Food Truck",
       "when": "Fri · 12:00 – 7:00 PM",
-      "image": "/assets/food/stoked-pizza.png",
+      "image": "/assets/food/stoked-pizza.webp",
       "calDate": "2026-06-05T12:00",
       "day": "05",
       "recurring": false
@@ -17,7 +17,7 @@
       "cover": "No Fee",
       "title": "Live on the Deck: Granny Takes a Trip",
       "when": "Thu · 7:00 PM",
-      "image": "/assets/events/2026-06-05_granny-takes-a-trip.png",
+      "image": "/assets/events/2026-06-05_granny-takes-a-trip.webp",
       "calDate": "2026-06-05T19:00",
       "day": "05",
       "recurring": false
@@ -28,7 +28,7 @@
       "cover": "",
       "title": "Costa Nachos — Food Truck",
       "when": "Fri · 2:00 – 7:00 PM",
-      "image": "/assets/food/costa-nachos.png",
+      "image": "/assets/food/costa-nachos.webp",
       "calDate": "2026-06-06T14:00",
       "day": "06",
       "recurring": false
@@ -39,7 +39,7 @@
       "cover": "",
       "title": "Sakura Hibachi — Food Truck",
       "when": "Sun · 2:00 – 7:00 PM",
-      "image": "/assets/food/sakura-hibachi.png",
+      "image": "/assets/food/sakura-hibachi.webp",
       "calDate": "2026-06-07T14:00",
       "day": "07",
       "recurring": false
@@ -50,7 +50,7 @@
       "cover": "",
       "title": "Stoked Pizza — Food Truck",
       "when": "Fri · 12:00 – 7:00 PM",
-      "image": "/assets/food/stoked-pizza.png",
+      "image": "/assets/food/stoked-pizza.webp",
       "calDate": "2026-06-12T12:00",
       "day": "12",
       "recurring": false
@@ -61,7 +61,7 @@
       "cover": "No Fee",
       "title": "Live on the Deck: Richie Young",
       "when": "Fri · 7:00 PM",
-      "image": "/assets/events/2026-06-12_richie-young.png",
+      "image": "/assets/events/2026-06-12_richie-young.webp",
       "calDate": "2026-06-12T19:00",
       "day": "12",
       "recurring": false
@@ -72,7 +72,7 @@
       "cover": "No Fee",
       "title": "Homebrew Hangouts",
       "when": "Thu · 7:00 PM",
-      "image": "/assets/events/2026-06-18_homebrew-hangouts.jpg",
+      "image": "/assets/events/2026-06-18_homebrew-hangouts.webp",
       "calDate": "2026-06-18T19:00",
       "day": "18",
       "recurring": false
@@ -83,7 +83,7 @@
       "cover": "",
       "title": "School Staff Social",
       "when": "Fri · 3:00 PM",
-      "image": "/assets/events/2026-06-19_school-staff-social.png",
+      "image": "/assets/events/2026-06-19_school-staff-social.webp",
       "calDate": "2026-06-19T15:00",
       "day": "19",
       "recurring": false
@@ -94,7 +94,7 @@
       "cover": "No Fee",
       "title": "Live on the Deck: Aaron MacDonald",
       "when": "Fri · 7:00 PM",
-      "image": "/assets/events/2026-06-19_aaron-macdonald.png",
+      "image": "/assets/events/2026-06-19_aaron-macdonald.webp",
       "calDate": "2026-06-19T19:00",
       "day": "19",
       "recurring": false
@@ -105,7 +105,7 @@
       "cover": "No Fee",
       "title": "Music Bingo: 70s & 80s Night",
       "when": "Sat · 7:00 PM",
-      "image": "/assets/events/2026-06-20_music-bingo.jpg",
+      "image": "/assets/events/2026-06-20_music-bingo.webp",
       "calDate": "2026-06-20T19:00",
       "day": "20",
       "recurring": false
@@ -116,7 +116,7 @@
       "cover": "$20 · 15 min reading",
       "title": "Tarot Readings with Salt & Sage",
       "when": "Thu · 6:00 PM",
-      "image": "/assets/events/2026-06-25_tarot-readings.png",
+      "image": "/assets/events/2026-06-25_tarot-readings.webp",
       "calDate": "2026-06-25T18:00",
       "day": "25",
       "recurring": false
@@ -127,7 +127,7 @@
       "cover": "No Fee",
       "title": "Allies & Ales",
       "when": "Sat · 2:00 PM",
-      "image": "/assets/events/2026-06-27_allies-and-ales.png",
+      "image": "/assets/events/2026-06-27_allies-and-ales.webp",
       "calDate": "2026-06-27T14:00",
       "day": "27",
       "recurring": false
@@ -138,7 +138,7 @@
       "cover": "No Fee",
       "title": "Tuesday Trivia Night",
       "when": "Every Tuesday · 7:00 PM",
-      "image": "/assets/photos/card-game-beers.png",
+      "image": "/assets/photos/card-game-beers.webp",
       "calDate": "",
       "day": "",
       "recurring": true
@@ -149,7 +149,7 @@
       "cover": "No Fee",
       "title": "Hampton Open Mic Night",
       "when": "Every Wednesday · 7:00 PM",
-      "image": "/assets/events/open-mic-night.png",
+      "image": "/assets/events/open-mic-night.webp",
       "calDate": "",
       "day": "",
       "recurring": true
@@ -160,7 +160,7 @@
       "cover": "No Fee",
       "title": "Stoked Pizza Fridays",
       "when": "Every Friday · 12:00 PM",
-      "image": "/assets/food/stoked-pizza.png",
+      "image": "/assets/food/stoked-pizza.webp",
       "calDate": "",
       "day": "",
       "recurring": true
@@ -171,7 +171,7 @@
       "cover": "No Fee",
       "title": "Deck Dogs Saturdays",
       "when": "Every Saturday · 12:00 PM",
-      "image": "/assets/photos/dog-sunflower-costume.png",
+      "image": "/assets/photos/dog-sunflower-costume.webp",
       "calDate": "",
       "day": "",
       "recurring": true
@@ -182,7 +182,7 @@
       "cover": "No Fee",
       "title": "Beer & Caesar Sundays",
       "when": "Every Sunday · 12:00 PM",
-      "image": "/assets/photos/bloody-mary.png",
+      "image": "/assets/photos/bloody-mary.webp",
       "calDate": "",
       "day": "",
       "recurring": true
