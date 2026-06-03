@@ -67,8 +67,8 @@ img { display: block; max-width: 100%; }
 /* ============================================================
    HEADER
    ============================================================ */
-.site-header { position: sticky; top: 0; z-index: 50; transition: background .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease); border-bottom: 1px solid transparent; }
-.site-header.scrolled { background: rgba(241,230,208,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); box-shadow: 0 6px 20px -16px rgba(0,0,0,.5); }
+.site-header { position: sticky; top: 0; z-index: 50; background: rgba(241,230,208,.92); backdrop-filter: blur(8px); border-bottom: 1px solid transparent; transition: box-shadow .25s var(--ease), border-color .25s var(--ease); }
+.site-header.scrolled { border-bottom: 1px solid var(--line); box-shadow: 0 6px 20px -16px rgba(0,0,0,.5); }
 .nav-inner { max-width: var(--maxw); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
 .brand img.emblem { height: 56px; width: auto; flex: none; mix-blend-mode: multiply; }
@@ -127,15 +127,17 @@ img { display: block; max-width: 100%; }
 /* ============================================================
    HERO
    ============================================================ */
-.hero { background: var(--paper); text-align: center; overflow: hidden; }
-.hero .inner { max-width: 1000px; margin: 0 auto; padding: 12px 32px 48px; display: flex; flex-direction: column; align-items: center; }
-.hero h1 { font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(48px, 7vw, 104px); line-height: .9; text-transform: uppercase; margin-top: 6px; }
+.hero { background: var(--ink); text-align: center; overflow: hidden; }
+.hero .inner { max-width: 1000px; margin: 0 auto; padding: 48px 32px 56px; display: flex; flex-direction: column; align-items: center; }
+.hero h1 { font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(72px, 10vw, 148px); line-height: .9; text-transform: uppercase; margin-top: 6px; color: var(--cream); }
 .hero h1 .rust { color: var(--red); }
-.hero .emblem-crest { height: clamp(380px, 55vw, 520px); width: auto; margin: 0 0 8px; transform: scale(1.35); filter: brightness(0) sepia(1) saturate(4) hue-rotate(8deg) brightness(0.78); }
-.hero .sub { max-width: 560px; font-size: 18px; line-height: 1.6; color: var(--ink-2); margin: 24px 0 32px; }
+.hero .kicker { color: var(--amber-bright); }
+.hero .sub { max-width: 560px; font-size: 18px; line-height: 1.6; color: rgba(250,243,228,.72); margin: 24px 0 32px; }
 .hero .cta { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
-.hero .footstrip { margin-top: 52px; display: flex; gap: 14px 40px; flex-wrap: wrap; justify-content: center; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-2); }
-.hero .footstrip b { color: var(--amber); }
+.hero .btn-ghost { color: var(--cream); }
+.hero .btn-ghost:hover { background: rgba(250,243,228,.1); border-color: var(--cream); color: var(--cream); }
+.hero .footstrip { margin-top: 52px; display: flex; gap: 14px 40px; flex-wrap: wrap; justify-content: center; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(250,243,228,.5); }
+.hero .footstrip b { color: var(--amber-bright); }
 .hero .footstrip span { display: inline-flex; align-items: center; gap: 8px; }
 
 /* ============================================================
@@ -157,7 +159,7 @@ img { display: block; max-width: 100%; }
 .beer-specs .spec { display: flex; flex-direction: column; gap: 1px; }
 .beer-specs .spec span { font-size: 11px; letter-spacing: .06em; color: var(--ink-3); }
 .beer-specs .spec b { color: var(--rust); font-size: 14px; }
-.beer-specs .tag { margin-left: auto; align-self: flex-start; font-size: 10px; letter-spacing: .12em; background: var(--amber); color: var(--ink-deep); padding: 4px 9px; border-radius: 2px; }
+.beer-specs .tag { margin-left: auto; align-self: flex-start; font-size: 9px; letter-spacing: .12em; background: var(--amber); color: var(--ink-deep); padding: 3px 7px; border-radius: 2px; }
 .beer-specs .tag.seasonal { background: var(--rust); color: var(--cream); }
 .beer-specs .tag.guest { background: #2a5c8a; color: #d4eaf7; }
 .beer-specs .tag-stack { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
@@ -308,5 +310,5 @@ img { display: block; max-width: 100%; }
   .beer-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
   .foot-inner { grid-template-columns: 1fr; gap: 28px; }
   .site-footer .footlogo { height: 72px; }
-  .hero .inner { padding-bottom: 60px; }
+  .hero .inner { padding: 40px 20px 60px; }
 }

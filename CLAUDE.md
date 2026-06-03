@@ -74,7 +74,9 @@ Every page section must use one of these — **never place two identical bands a
 | `.band-dark` | `--ink` | `--cream` | Drama, contrast sections |
 
 Current homepage band sequence (top → bottom):
-Hero (paper) → OnTap (dark) → Taproom (amber) → About (paper) → Events (paper-2) → Instagram (dark) → Community (amber) → Footer (dark)
+Hero (dark/ink) → OnTap (dark) → Taproom (amber) → About (paper) → Events (paper-2) → Instagram (dark) → Community (amber) → Footer (dark)
+
+Note: Hero and OnTap are both dark — intentional, they read as one continuous immersive opening. The transition point is Taproom (amber).
 
 ---
 
