@@ -54,7 +54,7 @@ const recurring = eventsData.events.filter(e => e.recurring).slice(0, 3);
     flex-wrap: wrap;
     gap: 0;
     margin-top: 32px;
-    border-top: 1px solid var(--rule, rgba(0,0,0,0.12));
+    border-top: 1px solid var(--line);
     padding-top: 20px;
   }
   .weekly-label {
@@ -72,7 +72,7 @@ const recurring = eventsData.events.filter(e => e.recurring).slice(0, 3);
     align-items: center;
     gap: 6px;
     padding: 6px 16px;
-    border-left: 1px solid var(--rule, rgba(0,0,0,0.12));
+    border-left: 1px solid var(--line);
   }
   .rec-icon {
     font-size: 14px;
@@ -91,7 +91,7 @@ const recurring = eventsData.events.filter(e => e.recurring).slice(0, 3);
   .weekly-when {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
-    color: var(--ink-muted, rgba(26,20,10,0.55));
+    color: var(--ink-3);
     white-space: nowrap;
   }
   @media (max-width: 640px) {

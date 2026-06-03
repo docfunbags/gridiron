@@ -13,6 +13,7 @@
   --ink-deep: #1c130c;
   --amber: #c17a2b;
   --amber-bright: #e0962f;
+  --amber-deep: #5a2c14;
   --rust: #8b3a2b;
   --red: #d83a29;
   --line: rgba(33, 23, 17, 0.16);
@@ -106,6 +107,8 @@ img { display: block; max-width: 100%; }
 .band-dark .section-head h2 { color: var(--cream); }
 .band-dark .kicker { color: var(--amber-bright); }
 .band-amber { background: var(--amber); color: var(--ink-deep); }
+.band-amber .btn-ghost { border-color: var(--ink); color: var(--ink); }
+.band-amber .btn-ghost:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
 .band-paper2 { background: var(--paper-2); }
 
 /* ---------- named grid layouts ---------- */
@@ -115,6 +118,7 @@ img { display: block; max-width: 100%; }
 .visit-directions-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: stretch; }
 .visit-food-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .visit-private-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.instagram-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 56px; align-items: start; }
 
 /* ---------- reveal ---------- */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
@@ -280,6 +284,7 @@ img { display: block; max-width: 100%; }
 
   /* Taproom images: hide second image on mobile to save space */
   .taproom-grid .reveal.d1 img:last-child { display: none; }
+  .instagram-grid { grid-template-columns: 1fr; gap: 32px; }
 
   /* Hero footstrip wraps more gracefully */
   .hero .footstrip { gap: 10px 24px; }

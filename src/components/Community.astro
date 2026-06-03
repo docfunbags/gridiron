@@ -10,11 +10,11 @@ const initial = photos.slice(0, 6);
 
       <!-- Text -->
       <div>
-        <span class="kicker reveal" style="color:#5a2c14;">In The Community</span>
+        <span class="kicker reveal" style="color:var(--amber-deep);">In The Community</span>
         <h2 class="display reveal d1" style="font-size:clamp(34px,5vw,72px);color:var(--ink-deep);margin:16px 0 22px;line-height:0.92;">
-          Drink Local.<br />Support Local.<br /><span style="color:#5a2c14;">Drink Gridiron.</span>
+          Drink Local.<br />Support Local.<br /><span style="color:var(--amber-deep);">Drink Gridiron.</span>
         </h2>
-        <p class="reveal d1" style="max-width:480px;font-size:17px;line-height:1.65;color:#3a1f0e;">From live music to trivia nights to everyday visits, you've made this more than a place to grab a drink — you've made it a place to belong. Dogs, kids, and good people welcome.</p>
+        <p class="reveal d1" style="max-width:480px;font-size:17px;line-height:1.65;color:var(--ink-2);">From live music to trivia nights to everyday visits, you've made this more than a place to grab a drink — you've made it a place to belong. Dogs, kids, and good people welcome.</p>
         <div class="reveal d2" style="margin-top:24px;">
           <a class="btn" href="/gallery" style="background:var(--ink-deep);color:var(--cream);">View All Photos →</a>
         </div>
@@ -122,44 +122,35 @@ const initial = photos.slice(0, 6);
 </style>
 
 <script>
-  const lightbox   = document.getElementById('community-lightbox');
+  import { openLightbox, closeLightbox } from '../utils/lightbox';
+
+  const lightbox    = document.getElementById('community-lightbox') as HTMLElement | null;
   const lightboxImg = document.getElementById('community-lightbox-img') as HTMLImageElement | null;
-  const mosaic     = document.getElementById('community-mosaic') as HTMLElement | null;
+  const mosaic      = document.getElementById('community-mosaic') as HTMLElement | null;
   const pool: { src: string; alt: string }[] = JSON.parse(mosaic?.dataset.pool || '[]');
 
   let paused = false;
 
-  // ── Lightbox ──────────────────────────────────────────────
-  function openLightbox(src: string, alt: string) {
-    if (!lightbox || !lightboxImg) return;
-    paused = true;
-    lightboxImg.src = src;
-    lightboxImg.alt = alt;
-    lightbox.classList.add('open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeLightbox() {
-    if (!lightbox) return;
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    paused = false;
-  }
-
   if (mosaic) {
     mosaic.querySelectorAll('.mosaic-item').forEach((item) => {
-      item.addEventListener('click', () =>
-        openLightbox(item.getAttribute('data-src') || '', item.getAttribute('data-alt') || '')
-      );
+      item.addEventListener('click', () => {
+        if (!lightbox || !lightboxImg) return;
+        paused = true;
+        openLightbox(lightbox, lightboxImg, item.getAttribute('data-src') || '', item.getAttribute('data-alt') || '');
+      });
     });
-    // Pause on hover over the whole mosaic
     mosaic.addEventListener('mouseenter', () => { paused = true; });
     mosaic.addEventListener('mouseleave', () => { paused = false; });
   }
 
-  lightbox?.addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  lightbox?.addEventListener('click', () => {
+    if (!lightbox) return;
+    closeLightbox(lightbox);
+    paused = false;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox) { closeLightbox(lightbox); paused = false; }
+  });
 
   // ── Cycling ───────────────────────────────────────────────
   if (mosaic && pool.length > 6) {

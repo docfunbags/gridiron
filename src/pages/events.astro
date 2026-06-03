@@ -176,34 +176,20 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
 </Layout>
 
 <script>
-  // Lightbox
-  const lightbox = document.getElementById('ev-lightbox');
-  const lbImg = document.getElementById('ev-lightbox-img') as HTMLImageElement | null;
+  import { openLightbox, closeLightbox } from '../utils/lightbox';
 
-  function openLightbox(src: string, alt: string) {
-    if (!lightbox || !lbImg || !src) return;
-    lbImg.src = src;
-    lbImg.alt = alt;
-    lightbox.classList.add('open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeLightbox() {
-    if (!lightbox) return;
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
+  const lightbox = document.getElementById('ev-lightbox') as HTMLElement | null;
+  const lbImg    = document.getElementById('ev-lightbox-img') as HTMLImageElement | null;
 
   document.querySelectorAll('.ev-thumb[data-src]').forEach((el) => {
     const src = el.getAttribute('data-src') || '';
     const alt = el.getAttribute('data-alt') || '';
-    if (!src) return;
-    el.addEventListener('click', () => openLightbox(src, alt));
+    if (!src || !lightbox || !lbImg) return;
+    el.addEventListener('click', () => openLightbox(lightbox, lbImg, src, alt));
   });
 
-  lightbox?.addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  lightbox?.addEventListener('click', () => { if (lightbox) closeLightbox(lightbox); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox) closeLightbox(lightbox); });
 
   // Auto-hide past events
   const now = new Date();
@@ -254,14 +240,6 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
     filter: brightness(1.08);
   }
 
-  /* Fallback when no image */
-  .ev-thumb-date {
-    font-family: 'Anton', sans-serif;
-    text-align: center;
-    line-height: 0.85;
-  }
-  .ev-thumb-date .d { font-size: 38px; display: block; }
-  .ev-thumb-date .m { font-size: 14px; color: var(--amber); display: block; }
   .rec-icon { font-size: 32px; color: var(--amber); }
 
   /* Inline date badge inside event-body */

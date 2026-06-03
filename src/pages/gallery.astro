@@ -39,7 +39,9 @@ const photos = communityData.photos;
 </Layout>
 
 <script>
-  const lightbox = document.getElementById('gallery-lightbox');
+  import { openLightbox, closeLightbox } from '../utils/lightbox';
+
+  const lightbox = document.getElementById('gallery-lightbox') as HTMLElement | null;
   const lbImg    = document.getElementById('gallery-lb-img') as HTMLImageElement | null;
   const lbPrev   = document.getElementById('gallery-lb-prev');
   const lbNext   = document.getElementById('gallery-lb-next');
@@ -55,27 +57,18 @@ const photos = communityData.photos;
   }
 
   function open(index: number) {
-    if (!lightbox) return;
+    if (!lightbox || !lbImg) return;
     show(index);
-    lightbox.classList.add('open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close() {
-    if (!lightbox) return;
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+    openLightbox(lightbox, lbImg, items[current].dataset.src || '', items[current].dataset.alt || '');
   }
 
   items.forEach((el, i) => el.addEventListener('click', () => open(i)));
   lbPrev?.addEventListener('click', (e) => { e.stopPropagation(); show(current - 1); });
   lbNext?.addEventListener('click', (e) => { e.stopPropagation(); show(current + 1); });
-  lightbox?.addEventListener('click', close);
+  lightbox?.addEventListener('click', () => { if (lightbox) closeLightbox(lightbox); });
   document.addEventListener('keydown', (e) => {
     if (!lightbox?.classList.contains('open')) return;
-    if (e.key === 'Escape')     close();
+    if (e.key === 'Escape')     closeLightbox(lightbox);
     if (e.key === 'ArrowLeft')  show(current - 1);
     if (e.key === 'ArrowRight') show(current + 1);
   });

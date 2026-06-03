@@ -133,7 +133,9 @@ All magic colours must be tokens. Never hardcode hex values that already exist a
 | `--ink-deep` | `#1c130c` | Dark text **on amber** backgrounds — buttons, headings in amber bands |
 | `--amber` | `#c17a2b` | Primary brand accent |
 | `--amber-bright` | `#e0962f` | Kickers on dark, hover states |
+| `--amber-deep` | `#5a2c14` | Kickers and accent text **on amber** bands |
 | `--rust` | `#8b3a2b` | Stats, seasonal tags, accent text |
+| `--red` | `#d83a29` | High-contrast accent on dark backgrounds (hero headline) |
 | `--line` | `rgba(33,23,17,.16)` | All borders and dividers |
 
 ---
