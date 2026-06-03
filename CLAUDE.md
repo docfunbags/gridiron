@@ -1,7 +1,7 @@
-# Gridiron Brewing Co. — Project Guide
+# Gridiron Brewing — Project Guide
 
 ## Project Overview
-Static brewery website for **Gridiron Brewing Co.**, Hampton, New Brunswick.
+Static brewery website for **Gridiron Brewing**, Hampton, New Brunswick.
 Built with Astro 6.4.2 + TypeScript + Tailwind CSS 4.3.0. Node >= 22.12.0 required.
 
 Live site: **gridironbrewing.ca**
@@ -106,7 +106,21 @@ Three fonts are in use. Use them deliberately:
 
 **Community photos** cycle client-side: 6 slots shown, one random slot crossfades every 3 seconds through the full pool in `community.json`. Pool is managed via Decap CMS.
 
-**Committing:** always include `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` in commit messages.
+**Committing:** use Conventional Commits format. Always include `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>` in commit messages.
+
+Conventional Commits prefix guide:
+| Prefix | Use for |
+|---|---|
+| `feat:` | New feature or capability |
+| `fix:` | Bug fix or broken behaviour |
+| `style:` | Visual / CSS changes with no logic change |
+| `content:` | Copy, data, or asset updates (events, beers, images) |
+| `chore:` | Housekeeping — renaming, moving files, dependencies |
+| `seo:` | Structured data, meta tags, sitemap, robots.txt |
+| `perf:` | Performance improvements |
+| `refactor:` | Code restructure with no behaviour change |
+
+Example: `feat: add auto-hide for past events`
 
 ---
 
