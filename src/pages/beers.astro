@@ -49,7 +49,7 @@ const beers = [...allBeers]
     </div>
   </div>
 
-  <section class="section" style="padding-top:56px;">
+  <section class="band-paper2 section" style="padding-top:56px;padding-bottom:56px;">
     <div class="beer-grid" data-tap-grid>
       {beers.map((beer) => (
         <article class={`beer-card${!beer.onTap ? ' off-tap' : ''}`} data-style={beer.styleCat} data-abv={beer.abv} data-ontap={beer.onTap}>
