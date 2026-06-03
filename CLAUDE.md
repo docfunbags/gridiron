@@ -92,6 +92,90 @@ Three fonts are in use. Use them deliberately:
 
 ---
 
+## Design System
+
+### Card Pattern
+Any card-type element (cream background, border, rounded corners) must use:
+- `background: var(--cream)` — card surface
+- `border: 1px solid var(--line)` — subtle edge
+- `border-radius: 6px` — consistent rounding
+- `class="card"` — applies the shared warm shadow: `0 4px 20px -4px rgba(33,23,17,.18)`
+
+Current card users: `.beer-card`, visit info cards (Parking/Kids/Accessibility), food truck cards.
+
+Beer cards additionally get the amber gradient top bar via `::before` — this is specific to beer cards only, not the generic card pattern.
+
+---
+
+### Hover Conventions
+Be consistent. Each interactive element type has one defined hover behaviour:
+
+| Element | Hover effect |
+|---|---|
+| Cards (`.beer-card`) | `translateY(-5px)` + deeper shadow |
+| Event rows | `padding-left: 12px` indent + title turns `--amber` |
+| Drink rows | Warm amber tint background + title turns `--amber` |
+| Links / nav | Colour → `--amber` or `--amber-bright` |
+| Buttons | `translateY(-2px)` + background shift |
+| Footer social icons | Icon opacity → 1 |
+
+Do not add hover effects that deviate from these patterns without a strong reason.
+
+---
+
+### CSS Tokens
+All magic colours must be tokens. Never hardcode hex values that already exist as variables.
+
+| Token | Value | Use for |
+|---|---|---|
+| `--ink-deep` | `#1c130c` | Dark text **on amber** backgrounds — buttons, headings in amber bands |
+| `--amber` | `#c17a2b` | Primary brand accent |
+| `--amber-bright` | `#e0962f` | Kickers on dark, hover states |
+| `--rust` | `#8b3a2b` | Stats, seasonal tags, accent text |
+| `--line` | `rgba(33,23,17,.16)` | All borders and dividers |
+
+---
+
+### Class Naming Conventions
+Follow the established modifier pattern — never invent new compound class names.
+
+**Badge tags** (`.beer-specs .tag`):
+- Type: `.tag` (flagship), `.tag.seasonal`, `.tag.guest`
+- Status: `.tag.ontap`, `.tag.ask`
+
+**Spec items**: `.spec` (ABV/IBU pairs inside `.beer-specs`)
+
+**Stat items**: `.stat` (number + label pairs inside `.story-stats`)
+
+**Named grid layouts** — desktop definitions live in `global.css`, mobile overrides in the `@media (max-width: 820px)` block. Never define these grids as inline styles:
+
+| Class | Columns | Used in |
+|---|---|---|
+| `.taproom-grid` | `1.2fr 1fr` | Taproom.astro |
+| `.community-outer` | `1fr 1fr` | Community.astro |
+| `.visit-hours-grid` | `1fr 1fr` | visit.astro |
+| `.visit-directions-grid` | `1.4fr 1fr` | visit.astro |
+| `.visit-food-grid` | `repeat(3, 1fr)` | visit.astro |
+| `.visit-private-grid` | `1fr 1fr` | visit.astro |
+
+---
+
+### Image Workflow
+All images must be WebP before committing. Never commit raw PNGs or JPGs (except `logo-favicon.png`).
+
+1. Drop new images into the appropriate `public/assets/` subfolder
+2. Run `node scripts/optimize-images.mjs` — converts to WebP, resizes logos, deletes originals
+3. Update any `src` references to use `.webp`
+
+Naming conventions:
+- **Logos** — role-based: `logo-nav.webp`, `logo-hero.webp`, `logo-footer.webp`, `logo-favicon.png`
+- **Event images** — date-prefixed: `YYYY-MM-DD_slug.webp`
+- **Photos / food / community** — descriptive slug, no date prefix
+
+The `_unused/` folder lives at the project root (not in `public/`) so unused assets are not deployed.
+
+---
+
 ## Rules & Conventions
 
 **Tap count is always 12.** There are 12 physical tap handles. Never derive this number dynamically from the `onTap` flag in `beers.json` — that flag is for CMS filtering only. Hardcode as `12` in stats and `twelve` in prose.
