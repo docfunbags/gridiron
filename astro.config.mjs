@@ -7,13 +7,11 @@ import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
 
-const isProd = process.env.NODE_ENV === 'production';
-
 export default defineConfig({
   site: 'https://gridironbrewing.com',
-  output: 'static',
-  adapter: cloudflare({ platformProxy: { enabled: false } }),
-  integrations: [react(), markdoc(), ...(isProd ? [] : [keystatic()]), sitemap()],
+  output: 'hybrid',
+  adapter: cloudflare(),
+  integrations: [react(), markdoc(), keystatic(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
     ssr: {

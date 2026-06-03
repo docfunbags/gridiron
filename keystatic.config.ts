@@ -1,7 +1,17 @@
 import { config, collection, fields } from '@keystatic/core';
 
+const storage = process.env.KEYSTATIC_GITHUB_CLIENT_ID
+  ? {
+      kind: 'github' as const,
+      repo: { owner: 'docfunbags', name: 'gridiron' } as const,
+    }
+  : { kind: 'local' as const };
+
 export default config({
-  storage: { kind: 'local' },
+  storage,
+  ui: {
+    brand: { name: 'Gridiron Brewing' },
+  },
 
   collections: {
     beers: collection({
