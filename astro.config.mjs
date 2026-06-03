@@ -9,7 +9,7 @@ import keystatic from '@keystatic/astro';
 
 export default defineConfig({
   site: 'https://gridironbrewing.com',
-  output: 'hybrid',
+  output: 'static',
   adapter: cloudflare(),
   integrations: [react(), markdoc(), keystatic(), sitemap()],
   vite: {
