@@ -1,38 +1,35 @@
 ---
+import Lightbox from './Lightbox.astro';
 import { photos } from '../data/community';
-const initial = photos.slice(0, 6);
+
+// Cap the client-side pool to keep the data attribute reasonable as content grows
+const pool = photos.slice(0, 60);
+const initial = pool.slice(0, 6);
 ---
 
 <section class="band-amber">
   <div class="section">
     <div class="community-outer">
-
-      <!-- Text -->
       <div>
-        <span class="kicker reveal" style="color:var(--amber-deep);">In The Community</span>
-        <h2 class="display reveal d1" style="font-size:clamp(34px,5vw,72px);color:var(--ink-deep);margin:16px 0 22px;line-height:0.92;">
-          Drink Local.<br />Support Local.<br /><span style="color:var(--amber-deep);">Drink Gridiron.</span>
+        <span class="kicker kicker-amber-deep reveal">In The Community</span>
+        <h2 class="community-h reveal d1">
+          Drink Local.<br />Support Local.<br /><span>Drink Gridiron.</span>
         </h2>
-        <p class="reveal d1" style="max-width:480px;font-size:17px;line-height:1.65;color:var(--ink-2);">From live music to trivia nights to everyday visits, you've made this more than a place to grab a drink — you've made it a place to belong. Dogs, kids, and good people welcome.</p>
-        <div class="reveal d2" style="margin-top:24px;">
-          <a class="btn" href="/gallery" style="background:var(--ink-deep);color:var(--cream);">View All Photos →</a>
+        <p class="body-on-amber reveal d1">From live music to trivia nights to everyday visits, you've made this more than a place to grab a drink — you've made it a place to belong. Dogs, kids, and good people welcome.</p>
+        <div class="stack-buttons-sm reveal d2">
+          <a class="btn btn-ink-deep" href="/gallery">View All Photos →</a>
         </div>
       </div>
 
-      <!-- Photo mosaic — data-pool carries the full JSON pool for client-side cycling -->
-      <div class="community-mosaic reveal d1" id="community-mosaic" data-pool={JSON.stringify(photos)}>
+      <div class="community-mosaic reveal d1" id="community-mosaic" data-pool={JSON.stringify(pool)}>
         {initial.map(p => (
-          <div class="mosaic-item" role="button" tabindex="0" data-src={p.src} data-alt={p.alt}>
+          <div class="mosaic-item lb-trigger" role="button" tabindex="0" data-src={p.srcFull} data-alt={p.alt}>
             <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
           </div>
         ))}
       </div>
 
-      <!-- Lightbox overlay -->
-      <div id="community-lightbox" aria-hidden="true" role="dialog" aria-modal="true">
-        <img id="community-lightbox-img" src="" alt="" />
-      </div>
-
+      <Lightbox id="community-lightbox" />
     </div>
   </div>
 </section>
@@ -46,8 +43,6 @@ const initial = photos.slice(0, 6);
     overflow: visible;
     padding: 12px;
   }
-
-  /* Force equal square cells */
   .community-mosaic::before {
     content: '';
     width: 0;
@@ -60,7 +55,6 @@ const initial = photos.slice(0, 6);
     grid-column: 1;
   }
 
-  /* Polaroid frame */
   .mosaic-item {
     aspect-ratio: 1;
     position: relative;
@@ -71,8 +65,6 @@ const initial = photos.slice(0, 6);
     box-shadow: 2px 3px 10px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.10);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-
-  /* Scattered rotation — each nth gives a different slight tilt */
   .mosaic-item:nth-child(1) { transform: rotate(-1.5deg); }
   .mosaic-item:nth-child(2) { transform: rotate( 1.2deg); }
   .mosaic-item:nth-child(3) { transform: rotate(-0.6deg); }
@@ -98,106 +90,60 @@ const initial = photos.slice(0, 6);
   .mosaic-item img.fading {
     opacity: 0;
   }
-
-  /* Lightbox */
-  #community-lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    background: rgba(0, 0, 0, 0.88);
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
-  }
-  #community-lightbox.open { display: flex; }
-  #community-lightbox-img {
-    max-width: 92vw;
-    max-height: 86vh;
-    object-fit: contain;
-    border-radius: 2px;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
-  }
 </style>
 
 <script>
-  import { openLightbox, closeLightbox } from '../utils/lightbox';
+  import { bindLightbox } from '../utils/lightbox';
 
-  const lightbox    = document.getElementById('community-lightbox') as HTMLElement | null;
-  const lightboxImg = document.getElementById('community-lightbox-img') as HTMLImageElement | null;
-  const mosaic      = document.getElementById('community-mosaic') as HTMLElement | null;
-  const pool: { src: string; alt: string }[] = JSON.parse(mosaic?.dataset.pool || '[]');
+  const mosaic = document.getElementById('community-mosaic') as HTMLElement | null;
+  const lb = document.getElementById('community-lightbox');
+  if (!mosaic || !lb) {
+    // nothing to do
+  } else {
+    bindLightbox('community-lightbox', '#community-mosaic .mosaic-item');
 
-  let hovering = false;
-  let lbOpen   = false;
+    const pool: { src: string; srcFull: string; alt: string }[] = JSON.parse(mosaic.dataset.pool || '[]');
+    let hovering = false;
+    const paused = () => hovering || lb.classList.contains('open');
 
-  const paused = () => hovering || lbOpen;
-
-  if (mosaic) {
-    mosaic.querySelectorAll('.mosaic-item').forEach((item) => {
-      const activate = () => {
-        if (!lightbox || !lightboxImg) return;
-        lbOpen = true;
-        openLightbox(lightbox, lightboxImg, item.getAttribute('data-src') || '', item.getAttribute('data-alt') || '');
-      };
-      item.addEventListener('click', activate);
-      item.addEventListener('keydown', (e) => {
-        if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
-          e.preventDefault();
-          activate();
-        }
-      });
-    });
     mosaic.addEventListener('mouseenter', () => { hovering = true; });
     mosaic.addEventListener('mouseleave', () => { hovering = false; });
-  }
 
-  lightbox?.addEventListener('click', () => {
-    if (!lightbox) return;
-    closeLightbox(lightbox);
-    lbOpen = false;
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox) { closeLightbox(lightbox); lbOpen = false; }
-  });
+    if (pool.length > 6) {
+      const items = Array.from(mosaic.querySelectorAll('.mosaic-item')) as HTMLElement[];
+      let slotIdx = 0;
+      let queue: typeof pool = [];
 
-  // ── Cycling ───────────────────────────────────────────────
-  if (mosaic && pool.length > 6) {
-    const items = Array.from(mosaic.querySelectorAll('.mosaic-item')) as HTMLElement[];
-    let slotIdx = 0;
-    let queue: typeof pool = [];
+      setInterval(() => {
+        if (paused()) return;
 
-    setInterval(() => {
-      if (paused()) return;
+        const slot = items[slotIdx % items.length];
+        slotIdx++;
 
-      const slot = items[slotIdx % items.length];
-      slotIdx++;
+        const shown = new Set(items.map(el => el.getAttribute('data-src')));
 
-      // Always exclude every photo currently visible in any slot
-      const shown = new Set(items.map(el => el.getAttribute('data-src')));
+        if (queue.filter(p => !shown.has(p.srcFull)).length === 0) {
+          queue = pool.filter(p => !shown.has(p.srcFull));
+        }
 
-      // Refill queue from pool minus currently shown whenever it runs low
-      if (queue.filter(p => !shown.has(p.src)).length === 0) {
-        queue = pool.filter(p => !shown.has(p.src));
-      }
+        const eligible = queue.filter(p => !shown.has(p.srcFull));
+        if (eligible.length === 0) return;
 
-      const eligible = queue.filter(p => !shown.has(p.src));
-      if (eligible.length === 0) return;
+        const next = eligible[Math.floor(Math.random() * eligible.length)];
+        queue = queue.filter(p => p.srcFull !== next.srcFull);
 
-      const next = eligible[Math.floor(Math.random() * eligible.length)];
-      queue = queue.filter(p => p.src !== next.src);
+        const img = slot.querySelector('img') as HTMLImageElement | null;
+        if (!img) return;
 
-      const img = slot.querySelector('img') as HTMLImageElement | null;
-      if (!img) return;
-
-      img.classList.add('fading');
-      setTimeout(() => {
-        img.src = next.src;
-        img.alt = next.alt;
-        slot.setAttribute('data-src', next.src);
-        slot.setAttribute('data-alt', next.alt);
-        requestAnimationFrame(() => requestAnimationFrame(() => img.classList.remove('fading')));
-      }, 600);
-    }, 4500);
+        img.classList.add('fading');
+        setTimeout(() => {
+          img.src = next.src;
+          img.alt = next.alt;
+          slot.setAttribute('data-src', next.srcFull);
+          slot.setAttribute('data-alt', next.alt);
+          requestAnimationFrame(() => requestAnimationFrame(() => img.classList.remove('fading')));
+        }, 600);
+      }, 4500);
+    }
   }
 </script>

@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 /* ============================================================
    GRIDIRON BREWING — design tokens & base styles
    ============================================================ */
@@ -41,6 +39,40 @@ img { display: block; max-width: 100%; }
 .kicker { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; color: var(--amber); }
 .kicker.rule { display: inline-flex; align-items: center; gap: 14px; color: var(--ink-2); }
 .kicker.rule::before { content: ""; width: 34px; height: 2px; background: var(--amber); }
+
+/* ---------- kicker colour variants ---------- */
+.kicker-amber-bright { color: var(--amber-bright); }
+.kicker-amber-deep   { color: var(--amber-deep); }
+.kicker-ink-2        { color: var(--ink-2); }
+
+/* ---------- display heading variants ---------- */
+.display-cream    { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; color: var(--cream); margin: 14px 0 22px; font-size: clamp(36px, 4.6vw, 60px); }
+.display-cream-sm { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; color: var(--cream); margin: 14px 0 6px;  font-size: clamp(34px, 4.4vw, 56px); }
+.display-cream-md { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; color: var(--cream); margin: 16px 0 20px; font-size: clamp(32px, 4vw, 54px); }
+.display-ink      { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; color: var(--ink-deep); margin: 14px 0 18px; font-size: clamp(36px, 4.8vw, 64px); }
+.display-ink-md   { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; color: var(--ink-deep); margin: 14px 0 18px; font-size: clamp(34px, 4.6vw, 58px); }
+.display-ink-lg   { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; color: var(--ink); margin: 14px 0 22px; font-size: clamp(40px, 5.2vw, 72px); }
+.display-amber    { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; color: var(--ink-deep); margin: 16px 0 22px; font-size: clamp(34px, 5vw, 72px); }
+.display-amber span { color: var(--amber-deep); }
+
+/* ---------- centered CTA sections in dark bands ---------- */
+.section-cta-tight { padding: 72px 32px; text-align: center; }
+.section-cta-tight .cta-lead { font-size: 17px; color: var(--cream-dim); max-width: 480px; margin: 0 auto 32px; line-height: 1.6; }
+
+/* ---------- generic body lead helpers ---------- */
+.body-on-ink    { font-size: 18px; line-height: 1.65; color: var(--ink-2); max-width: 480px; }
+.body-on-amber  { font-size: 17px; line-height: 1.65; color: var(--ink-2); max-width: 460px; }
+.body-on-cream-dim { font-size: 16px; line-height: 1.65; color: var(--cream-dim); max-width: 320px; margin-bottom: 24px; }
+
+/* ---------- spacing helpers ---------- */
+.stack-buttons { margin-top: 26px; display: flex; gap: 14px; flex-wrap: wrap; }
+.stack-buttons-sm { margin-top: 22px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* ---------- buttons that match the dark/amber bands ---------- */
+.btn-ink { background: var(--ink); color: var(--cream); }
+.btn-ink:hover { background: var(--ink-2); }
+.btn-ink-deep { background: var(--ink-deep); color: var(--cream); }
+.btn-ink-deep:hover { background: var(--ink); }
 
 /* ---------- grain ---------- */
 .grain { position: relative; }
@@ -251,6 +283,96 @@ img { display: block; max-width: 100%; }
 .price-callout { text-align: center; }
 .price-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--amber-bright); margin: 0 0 4px; }
 .price-amount { font-size: 26px; font-family: 'Anton', sans-serif; color: var(--cream); margin: 0; line-height: 1; }
+
+/* ============================================================
+   HERO BACKGROUND IMAGE
+   ============================================================ */
+.hero { position: relative; }
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0.38; }
+.hero .inner { position: relative; z-index: 1; }
+
+/* ============================================================
+   ON-TAP (homepage band)
+   ============================================================ */
+.ontap-head { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
+.ontap-prices { display: flex; align-items: flex-end; gap: 28px; flex-wrap: wrap; }
+.ontap-prices .pair { display: flex; gap: 20px; }
+
+/* ============================================================
+   TAPROOM (homepage band)
+   ============================================================ */
+.taproom-grid h2.display-ink-lg { color: var(--ink); }
+.taproom-images { display: grid; grid-template-rows: 1fr 1fr; gap: 12px; height: 100%; }
+.taproom-images .photo { aspect-ratio: 16/9; object-position: center; }
+.taproom-grid .kicker-ink-2 { color: var(--ink-2); }
+
+/* ============================================================
+   STORY (homepage)
+   ============================================================ */
+.story-img { aspect-ratio: 3/4; object-position: right center; }
+.story-h { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; font-size: clamp(36px, 4.4vw, 60px); margin: 14px 0 22px; }
+
+/* ============================================================
+   COMMUNITY (homepage)
+   ============================================================ */
+.community-h { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; color: var(--ink-deep); margin: 16px 0 22px; font-size: clamp(34px, 5vw, 72px); }
+.community-h span { color: var(--amber-deep); }
+
+/* ============================================================
+   INSTAGRAM (homepage)
+   ============================================================ */
+.ig-h     { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; margin: 12px 0 22px; font-size: clamp(32px, 4vw, 52px); }
+.ig-embed { max-width: 480px; min-height: 320px; }
+
+/* ============================================================
+   BEERS PAGE — also-on-menu + flights band
+   ============================================================ */
+.also-menu-wrap   { max-width: 860px; }
+.also-menu-h      { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; line-height: .92; font-size: clamp(36px, 4.6vw, 58px); margin: 0 0 48px; }
+.also-menu-group  { margin-bottom: 48px; }
+.also-menu-group:last-of-type { margin-bottom: 0; }
+.also-menu-group .kicker { display: block; margin-bottom: 20px; }
+
+.tap-section .price-tagline { border-left: 1px solid var(--line); padding-left: 28px; }
+
+.flights-band   { padding: 72px 32px; }
+.flights-band .display-ink-md { color: var(--ink-deep); margin: 14px 0 18px; line-height: 0.92; }
+.flights-band .copy { max-width: 460px; font-size: 17px; line-height: 1.6; color: var(--ink-2); }
+.flights-img    { height: clamp(360px, 40vw, 500px); }
+
+/* ============================================================
+   VISIT PAGE
+   ============================================================ */
+.visit-address     { font-family: 'Anton', sans-serif; font-size: 30px; line-height: 1.05; text-transform: uppercase; color: var(--cream); }
+.visit-contact     { margin-top: 22px; display: flex; flex-direction: column; gap: 12px; font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: .04em; color: var(--cream-muted); }
+.visit-contact span { display: flex; align-items: center; gap: 8px; }
+.visit-cta-row     { margin-top: 28px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+.summer-hours-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--amber-bright); margin-bottom: 22px; }
+.hours-note         { font-family: 'DM Mono', monospace; font-size: 15px; letter-spacing: .06em; color: var(--cream); margin-top: 18px; }
+
+.map-frame          { min-height: 420px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); }
+.info-stack         { display: flex; flex-direction: column; gap: 18px; }
+.info-card          { background: var(--cream); border: 1px solid var(--line); border-radius: 6px; padding: 24px; }
+.info-card h4       { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
+.info-card p        { font-size: 15px; color: var(--ink-2); line-height: 1.6; }
+
+.food-card          { background: var(--cream); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.food-card-img      { aspect-ratio: 4/3; overflow: hidden; }
+.food-card-img img  { width: 100%; height: 100%; object-fit: cover; display: block; }
+.food-card-body     { padding: 22px 24px; }
+.food-card-body h3  { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 24px; text-transform: uppercase; margin: 0 0 6px; }
+.food-card-body .cuisine { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--amber); margin: 0 0 12px; }
+.food-card-body p   { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin: 0 0 16px; }
+.food-card-body .fb-link { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--amber); text-decoration: none; }
+
+.byo-band           { background: var(--ink); color: var(--cream); border-radius: 6px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.byo-band p         { font-size: 15px; line-height: 1.6; margin: 0; max-width: 560px; color: rgba(250, 243, 228, .8); }
+.byo-band p b       { color: var(--cream); }
+
+.private-img        { aspect-ratio: 4/3; border-radius: 6px; overflow: hidden; }
+.private-img img    { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ============================================================
    DRINKS LIST

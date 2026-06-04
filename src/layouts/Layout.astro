@@ -2,16 +2,25 @@
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-import { siteUrl } from '../utils/constants';
+import { siteUrl, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from '../utils/constants';
 
 interface Props {
   title?: string;
+  description?: string;
+  ogImage?: string;
   activeNav?: string;
 }
 
-const { title = 'Gridiron Brewing — Hampton, New Brunswick', activeNav } = Astro.props;
+const {
+  title = 'Gridiron Brewing — Hampton, New Brunswick',
+  description = DEFAULT_DESCRIPTION,
+  ogImage = DEFAULT_OG_IMAGE,
+  activeNav,
+} = Astro.props;
 
 const pathname = Astro.url.pathname;
+const canonicalUrl = `${siteUrl}${pathname}`;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 
 const localBusiness = {
   '@context': 'https://schema.org',
@@ -58,6 +67,7 @@ const pageLabels: Record<string, string> = {
   '/beers': 'Drinks',
   '/events': 'Events',
   '/visit': 'Visit',
+  '/gallery': 'Gallery',
 };
 const pageLabel = Object.entries(pageLabels).find(([k]) => pathname.startsWith(k))?.[1];
 
@@ -66,7 +76,7 @@ const breadcrumb = pageLabel ? {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home',     item: siteUrl },
-    { '@type': 'ListItem', position: 2, name: pageLabel,  item: `${siteUrl}${pathname}` },
+    { '@type': 'ListItem', position: 2, name: pageLabel,  item: canonicalUrl },
   ],
 } : null;
 ---
@@ -74,70 +84,46 @@ const breadcrumb = pageLabel ? {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/png" href="/assets/logos/logo-favicon.png" />
     <link rel="apple-touch-icon" href="/assets/logos/logo-favicon.png" />
-    <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content="Gridiron Brewing — Small-batch craft beer brewed in Hampton, New Brunswick. Taproom on the Kennebecasis. Cold pints, cozy place." />
-    <title>{title}</title>
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Gridiron Brewing" />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content="Small-batch craft beer brewed in Hampton, New Brunswick. Cold pints, cozy place." />
-    <meta property="og:image" content={`${siteUrl}/assets/photos/crowded-bar.webp`} />
-    <meta property="og:url" content={`${siteUrl}${pathname}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
     <!-- Twitter/X card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content="Small-batch craft beer brewed in Hampton, New Brunswick. Cold pints, cozy place." />
-    <meta name="twitter:image" content={`${siteUrl}/assets/photos/crowded-bar.webp`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <!-- Theme colour for mobile browsers -->
     <meta name="theme-color" content="#c17a2b" />
-    <link rel="canonical" href={`${siteUrl}${pathname}`} />
     <!-- Structured data -->
-    <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
-    {breadcrumb && <script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />}
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+    {breadcrumb && <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />}
     <!-- Page-specific structured data slot -->
     <slot name="head" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&family=DM+Mono:wght@400;500&display=swap" />
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" /></noscript>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" /></noscript>
   </head>
   <body>
-    <script>
-      // Load Netlify Identity widget only when an invite/recovery token is present
-      if (window.location.hash && (
-        window.location.hash.includes('invite_token') ||
-        window.location.hash.includes('recovery_token')
-      )) {
-        const s = document.createElement('script');
-        s.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-        s.onload = () => {
-          window.netlifyIdentity.on('init', (user: any) => {
-            if (!user) window.netlifyIdentity.open();
-          });
-        };
-        document.head.appendChild(s);
-      }
-    </script>
     <Navbar activeNav={activeNav} />
     <main>
       <slot />
     </main>
     <Footer />
     <script>
-      const reveals = document.querySelectorAll('.reveal');
-      if ('IntersectionObserver' in window && reveals.length) {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-        reveals.forEach((el) => io.observe(el));
-      } else {
-        reveals.forEach((el) => el.classList.add('in'));
-      }
+      import '../utils/reveal';
     </script>
   </body>
 </html>

@@ -1,87 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Lightbox from '../components/Lightbox.astro';
 import { events } from '../data/events';
-import { siteUrl } from '../utils/constants';
+import { buildEventSchemas, gcalUrl, icsUri } from '../utils/eventSchema';
 
 const upcoming = events.filter(e => !e.recurring);
 const recurring = events.filter(e => e.recurring);
-const eventSchemas = upcoming
-  .filter(ev => ev.calDate && new Date(ev.calDate) > new Date())
-  .map(ev => {
-    const start = new Date(ev.calDate);
-    const end = new Date(start);
-    end.setHours(end.getHours() + 2);
-    return {
-      '@context': 'https://schema.org',
-      '@type': 'Event',
-      name: ev.title,
-      description: ev.desc,
-      startDate: ev.calDate,
-      endDate: end.toISOString().slice(0, 16),
-      ...(ev.image ? { image: `${siteUrl}${ev.image}` } : {}),
-      location: {
-        '@type': 'Place',
-        name: 'Gridiron Brewing',
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: '1051 Main Street',
-          addressLocality: 'Hampton',
-          addressRegion: 'NB',
-          addressCountry: 'CA',
-        },
-      },
-      organizer: { '@type': 'Organization', name: 'Gridiron Brewing', url: siteUrl },
-      eventStatus: 'https://schema.org/EventScheduled',
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      isAccessibleForFree: !ev.cover || ev.cover === 'No Fee',
-    };
-  });
+const eventSchemas = buildEventSchemas(upcoming);
 
-function gcalUrl(ev: { title: string; desc: string; calDate: string }): string {
-  const dt = ev.calDate.replace(/[-:]/g, '');
-  const end = (() => {
-    const d = new Date(ev.calDate);
-    d.setHours(d.getHours() + 2);
-    return d.toISOString().replace(/[-:]/g, '').slice(0, 15);
-  })();
-  const p = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: ev.title,
-    dates: `${dt}/${end}`,
-    details: ev.desc,
-    location: 'Gridiron Brewing, Hampton, NB',
-  });
-  return `https://calendar.google.com/calendar/render?${p.toString()}`;
-}
+const nextEvent = upcoming.find(e => e.image);
+const ogImage = nextEvent?.imageFull;
 
-function icsUri(ev: { title: string; desc: string; calDate: string }): string {
-  const fmt = (d: Date) =>
-    d.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
-  const start = new Date(ev.calDate);
-  const end = new Date(start);
-  end.setHours(end.getHours() + 2);
-  const uid = `${ev.calDate.replace(/\W/g, '')}-gridiron@gridironbrewing.com`;
-  const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'BEGIN:VEVENT',
-    `DTSTART:${fmt(start)}`,
-    `DTEND:${fmt(end)}`,
-    `SUMMARY:${ev.title}`,
-    `DESCRIPTION:${ev.desc.replace(/\n/g, '\\n')}`,
-    'LOCATION:Gridiron Brewing, Hampton, NB',
-    `UID:${uid}`,
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ].join('\r\n');
-  return `data:text/calendar;charset=utf-8,${encodeURIComponent(lines)}`;
-}
+const description = 'Live music most weekends, trivia every Tuesday, food trucks on the patio. Free to get in. Hampton, NB.';
 ---
 
-<Layout title="Events & Music — Gridiron Brewing" activeNav="Events">
+<Layout title="Events & Music — Gridiron Brewing" description={description} ogImage={ogImage} activeNav="Events">
   <Fragment slot="head">
     {eventSchemas.map(schema => (
-      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
     ))}
   </Fragment>
 
@@ -91,7 +27,6 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
     <p>Live music most weekends, trivia every Tuesday, food trucks on the patio, and a few surprises along the way. Always free to get in.</p>
   </section>
 
-  <!-- Upcoming special events -->
   {upcoming.length > 0 && (
     <section class="section" id="ev-upcoming">
       <div class="section-head">
@@ -101,11 +36,9 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
       <div class="event-list ev-list-img">
         {upcoming.map((ev, i) => (
           <div class={`event-row reveal${i > 0 ? ` d${Math.min(i, 3)}` : ''}`} data-caldate={ev.calDate || ''}>
-            <!-- Thumbnail column -->
-            <div class="ev-thumb" data-src={ev.image || ''} data-alt={ev.title}>
+            <div class="ev-thumb lb-trigger" data-src={ev.imageFull || ''} data-alt={ev.title}>
               <img src={ev.image || '/assets/events/placeholder.svg'} alt={ev.image ? ev.title : ''} loading="lazy" decoding="async" />
             </div>
-            <!-- Body: date badge + text -->
             <div class="event-body">
               {ev.day && (
                 <div class="ev-date-badge">
@@ -131,66 +64,48 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
     </section>
   )}
 
-  <!-- Recurring weekly events -->
   <section class="band-paper2">
     <div class="section">
-    <div class="section-head">
-      <span class="kicker reveal">Every Week</span>
-      <h2 class="reveal d1">Regular Nights</h2>
-      <p class="lead reveal d1">These happen on the regular — no date required. Just show up.</p>
-    </div>
-    <div class="event-list ev-list-img">
-      {recurring.map((ev, i) => (
-        <div class={`event-row reveal${i > 0 ? ` d${Math.min(i, 3)}` : ''}`}>
-          <div class="ev-thumb" data-src={ev.image || ''} data-alt={ev.title}>
-            <img src={ev.image || '/assets/events/placeholder.svg'} alt={ev.image ? ev.title : ''} loading="lazy" decoding="async" />
+      <div class="section-head">
+        <span class="kicker reveal">Every Week</span>
+        <h2 class="reveal d1">Regular Nights</h2>
+        <p class="lead reveal d1">These happen on the regular — no date required. Just show up.</p>
+      </div>
+      <div class="event-list ev-list-img">
+        {recurring.map((ev, i) => (
+          <div class={`event-row reveal${i > 0 ? ` d${Math.min(i, 3)}` : ''}`}>
+            <div class="ev-thumb lb-trigger" data-src={ev.imageFull || ''} data-alt={ev.title}>
+              <img src={ev.image || '/assets/events/placeholder.svg'} alt={ev.image ? ev.title : ''} loading="lazy" decoding="async" />
+            </div>
+            <div class="event-body">
+              <div class="ev-rec-badge">↻ Weekly</div>
+              <h4>{ev.title}</h4>
+              <p>{ev.desc}</p>
+            </div>
+            <div class="event-meta">
+              {ev.when}{ev.cover && <><br /><span class="free">{ev.cover}</span></>}
+            </div>
           </div>
-          <div class="event-body">
-            <div class="ev-rec-badge">↻ Weekly</div>
-            <h4>{ev.title}</h4>
-            <p>{ev.desc}</p>
-          </div>
-          <div class="event-meta">
-            {ev.when}{ev.cover && <><br /><span class="free">{ev.cover}</span></>}
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
     </div>
   </section>
 
-  <!-- CTA band -->
   <section class="band-dark">
-    <div class="section" style="padding:72px 32px;text-align:center;">
-      <span class="kicker" style="color:var(--amber-bright);">Stay In The Loop</span>
-      <h2 class="display" style="font-size:clamp(32px,4vw,54px);color:var(--cream);margin:16px 0 20px;line-height:0.92;">Follow Along<br />On Instagram</h2>
-      <p style="font-size:17px;color:var(--cream-dim);max-width:480px;margin:0 auto 32px;line-height:1.6;">Tap releases, last-minute food trucks, live music announcements — it all lands on Instagram first.</p>
+    <div class="section section-cta-tight">
+      <span class="kicker kicker-amber-bright">Stay In The Loop</span>
+      <h2 class="display display-cream-md">Follow Along<br />On Instagram</h2>
+      <p class="cta-lead">Tap releases, last-minute food trucks, live music announcements — it all lands on Instagram first.</p>
       <a class="btn btn-amber" href="https://www.instagram.com/gridironbrewing/" target="_blank" rel="noopener">@gridironbrewing →</a>
     </div>
   </section>
 
-  <!-- Lightbox -->
-  <div id="ev-lightbox" aria-hidden="true" role="dialog" aria-modal="true">
-    <img id="ev-lightbox-img" src="" alt="" />
-  </div>
-
+  <Lightbox id="ev-lightbox" />
 </Layout>
 
 <script>
-  import { openLightbox, closeLightbox } from '../utils/lightbox';
-
-  const lightbox = document.getElementById('ev-lightbox') as HTMLElement | null;
-  const lbImg    = document.getElementById('ev-lightbox-img') as HTMLImageElement | null;
-
-  document.querySelectorAll('.ev-thumb[data-src]').forEach((el) => {
-    const src = el.getAttribute('data-src') || '';
-    const alt = el.getAttribute('data-alt') || '';
-    if (!src || !lightbox || !lbImg) return;
-    el.addEventListener('click', () => openLightbox(lightbox, lbImg, src, alt));
-  });
-
-  lightbox?.addEventListener('click', () => { if (lightbox) closeLightbox(lightbox); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox) closeLightbox(lightbox); });
+  import { bindLightbox } from '../utils/lightbox';
+  bindLightbox('ev-lightbox', '.lb-trigger[data-src]:not([data-src=""])');
 
   // Auto-hide past events
   const now = new Date();
@@ -210,12 +125,10 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
 </script>
 
 <style>
-  /* Override the event-row first column for image lists */
   .ev-list-img .event-row {
     grid-template-columns: 220px 1fr auto;
   }
 
-  /* Thumbnail cell */
   .ev-thumb {
     width: 220px;
     height: 150px;
@@ -241,9 +154,6 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
     filter: brightness(1.08);
   }
 
-  .rec-icon { font-size: 32px; color: var(--amber); }
-
-  /* Inline date badge inside event-body */
   .ev-date-badge {
     display: flex;
     align-items: baseline;
@@ -272,7 +182,6 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
     margin-bottom: 6px;
   }
 
-  /* Calendar links */
   .cal-links {
     display: flex;
     gap: 10px;
@@ -297,27 +206,6 @@ function icsUri(ev: { title: string; desc: string; calDate: string }): string {
     color: var(--ink);
   }
 
-  /* Lightbox */
-  #ev-lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.9);
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
-  }
-  #ev-lightbox.open { display: flex; }
-  #ev-lightbox-img {
-    max-width: 92vw;
-    max-height: 88vh;
-    object-fit: contain;
-    border-radius: 6px;
-    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
-  }
-
-  /* Mobile */
   @media (max-width: 520px) {
     .ev-list-img .event-row {
       grid-template-columns: 90px 1fr;

@@ -6,50 +6,50 @@ const recurring = events.filter(e => e.recurring).slice(0, 3);
 
 <section class="band-paper2" id="events">
   <div class="section">
-  <div class="section-head">
-    <span class="kicker reveal">Live At Gridiron</span>
-    <h2 class="reveal d1">Events &amp; Music</h2>
-    <p class="lead reveal d1">Something on most nights we're open. Live music every weekend, trivia midweek, and the occasional food truck. Always free to get in.</p>
-  </div>
-  <div class="event-list">
-    {upcoming.map((ev, i) => (
-      <div class={`event-row reveal${i > 0 ? ` d${Math.min(i, 3)}` : ''}`}>
-        <div class="event-date">
-          <span class="d">{ev.day}</span>
-          <span class="m">{ev.month}</span>
-        </div>
-        <div class="event-body">
-          <h4>{ev.title}</h4>
-          <p>{ev.desc}</p>
-        </div>
-        <div class="event-meta">
-          {ev.when}{ev.cover && <><br /><span class="free">{ev.cover}</span></>}
-        </div>
-      </div>
-    ))}
-  </div>
-
-  <!-- Weekly regulars strip -->
-  {recurring.length > 0 && (
-    <div class="weekly-strip reveal d2">
-      <span class="weekly-label">Every week</span>
-      {recurring.map((ev) => (
-        <div class="weekly-item">
-          <span class="rec-icon">↻</span>
-          <span class="weekly-title">{ev.title}</span>
-          <span class="weekly-when">{ev.when}</span>
+    <div class="section-head">
+      <span class="kicker reveal">Live At Gridiron</span>
+      <h2 class="reveal d1">Events &amp; Music</h2>
+      <p class="lead reveal d1">Something on most nights we're open. Live music every weekend, trivia midweek, and the occasional food truck. Always free to get in.</p>
+    </div>
+    <div class="event-list">
+      {upcoming.map((ev, i) => (
+        <div class={`event-row reveal${i > 0 ? ` d${Math.min(i, 3)}` : ''}`}>
+          <div class="event-date">
+            <span class="d">{ev.day}</span>
+            <span class="m">{ev.month}</span>
+          </div>
+          <div class="event-body">
+            <h4>{ev.title}</h4>
+            <p>{ev.desc}</p>
+          </div>
+          <div class="event-meta">
+            {ev.when}{ev.cover && <><br /><span class="free">{ev.cover}</span></>}
+          </div>
         </div>
       ))}
     </div>
-  )}
 
-  <div style="text-align:center;margin-top:40px;">
-    <a class="btn btn-amber reveal" href="/events">Full Calendar →</a>
-  </div>
+    {recurring.length > 0 && (
+      <div class="weekly-strip reveal d2">
+        <span class="weekly-label">Every week</span>
+        {recurring.map((ev) => (
+          <div class="weekly-item">
+            <span class="rec-icon">↻</span>
+            <span class="weekly-title">{ev.title}</span>
+            <span class="weekly-when">{ev.when}</span>
+          </div>
+        ))}
+      </div>
+    )}
+
+    <div class="full-cal-row">
+      <a class="btn btn-amber reveal" href="/events">Full Calendar →</a>
+    </div>
   </div>
 </section>
 
 <style>
+  .full-cal-row { text-align: center; margin-top: 40px; }
   .weekly-strip {
     display: flex;
     align-items: center;

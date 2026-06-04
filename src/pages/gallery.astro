@@ -1,9 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Lightbox from '../components/Lightbox.astro';
 import { photos } from '../data/community';
+
+const description = 'Community photos from the Gridiron Brewing taproom in Hampton, NB — shared by the people who make this place what it is.';
 ---
 
-<Layout title="Community Gallery — Gridiron Brewing" activeNav="">
+<Layout title="Community Gallery — Gridiron Brewing" description={description} activeNav="">
   <section class="page-hero grain">
     <span class="kicker">Our Community · Hampton, NB</span>
     <h1>The Gallery</h1>
@@ -13,7 +16,7 @@ import { photos } from '../data/community';
   <section class="section">
     <div class="gallery-grid">
       {photos.map((photo) => (
-        <div class="gallery-item" role="button" tabindex="0" data-src={photo.src} data-alt={photo.alt}>
+        <div class="gallery-item lb-trigger" role="button" tabindex="0" data-src={photo.srcFull} data-alt={photo.alt}>
           <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
         </div>
       ))}
@@ -21,60 +24,20 @@ import { photos } from '../data/community';
   </section>
 
   <section class="band-dark">
-    <div class="section" style="text-align:center;padding:72px 32px;">
-      <span class="kicker" style="color:var(--amber-bright);">Get Featured</span>
-      <h2 class="display" style="font-size:clamp(32px,4vw,54px);color:var(--cream);margin:16px 0 20px;line-height:0.92;">Tag Us<br />@gridironbrewing</h2>
-      <p style="font-size:17px;color:var(--cream-dim);max-width:480px;margin:0 auto 32px;line-height:1.6;">We go through every single one, argue about our favourites over a cold pint, and the best ones end up right here. Dogs jump the queue. You've been warned.</p>
+    <div class="section section-cta-tight">
+      <span class="kicker kicker-amber-bright">Get Featured</span>
+      <h2 class="display-cream-md">Tag Us<br />@gridironbrewing</h2>
+      <p class="cta-lead">We go through every single one, argue about our favourites over a cold pint, and the best ones end up right here. Dogs jump the queue. You've been warned.</p>
       <a class="btn btn-amber" href="https://www.instagram.com/gridironbrewing/" target="_blank" rel="noopener">Follow on Instagram →</a>
     </div>
   </section>
 
-  <div id="gallery-lightbox" aria-hidden="true" role="dialog" aria-modal="true">
-    <button id="gallery-lb-prev" aria-label="Previous photo">&#8249;</button>
-    <img id="gallery-lb-img" src="" alt="" />
-    <button id="gallery-lb-next" aria-label="Next photo">&#8250;</button>
-  </div>
+  <Lightbox id="gallery-lightbox" withNav />
 </Layout>
 
 <script>
-  import { openLightbox, closeLightbox } from '../utils/lightbox';
-
-  const lightbox = document.getElementById('gallery-lightbox') as HTMLElement | null;
-  const lbImg    = document.getElementById('gallery-lb-img') as HTMLImageElement | null;
-  const lbPrev   = document.getElementById('gallery-lb-prev');
-  const lbNext   = document.getElementById('gallery-lb-next');
-
-  const items = Array.from(document.querySelectorAll('.gallery-item[data-src]')) as HTMLElement[];
-  let current = 0;
-
-  function show(index: number) {
-    current = (index + items.length) % items.length;
-    if (!lbImg) return;
-    lbImg.src = items[current].dataset.src || '';
-    lbImg.alt = items[current].dataset.alt || '';
-  }
-
-  function open(index: number) {
-    if (!lightbox || !lbImg) return;
-    current = (index + items.length) % items.length;
-    openLightbox(lightbox, lbImg, items[current].dataset.src || '', items[current].dataset.alt || '');
-  }
-
-  items.forEach((el, i) => {
-    el.addEventListener('click', () => open(i));
-    el.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); }
-    });
-  });
-  lbPrev?.addEventListener('click', (e) => { e.stopPropagation(); show(current - 1); });
-  lbNext?.addEventListener('click', (e) => { e.stopPropagation(); show(current + 1); });
-  lightbox?.addEventListener('click', () => { if (lightbox) closeLightbox(lightbox); });
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox?.classList.contains('open')) return;
-    if (e.key === 'Escape')     closeLightbox(lightbox);
-    if (e.key === 'ArrowLeft')  show(current - 1);
-    if (e.key === 'ArrowRight') show(current + 1);
-  });
+  import { bindLightbox } from '../utils/lightbox';
+  bindLightbox('gallery-lightbox', '.gallery-item.lb-trigger', { withNav: true });
 </script>
 
 <style>
@@ -105,49 +68,10 @@ import { photos } from '../data/community';
     filter: brightness(1.08);
   }
 
-  /* Lightbox */
-  #gallery-lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.92);
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-  }
-  #gallery-lightbox.open { display: flex; }
-
-  #gallery-lb-img {
-    max-width: 80vw;
-    max-height: 86vh;
-    object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
-  }
-
-  #gallery-lb-prev,
-  #gallery-lb-next {
-    background: none;
-    border: none;
-    color: rgba(250, 243, 228, 0.6);
-    font-size: 56px;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0 12px;
-    transition: color 0.15s;
-    flex-shrink: 0;
-    user-select: none;
-  }
-  #gallery-lb-prev:hover,
-  #gallery-lb-next:hover { color: var(--cream); }
-
   @media (max-width: 820px) {
     .gallery-grid { grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 520px) {
     .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    #gallery-lb-prev, #gallery-lb-next { font-size: 40px; padding: 0 6px; }
-    #gallery-lb-img { max-width: 92vw; }
   }
 </style>

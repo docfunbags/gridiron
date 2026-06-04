@@ -7,16 +7,28 @@ import Taproom from '../components/Taproom.astro';
 import Events from '../components/Events.astro';
 import Community from '../components/Community.astro';
 import InstagramFeed from '../components/InstagramFeed.astro';
+import { events } from '../data/events';
+import { buildEventSchemas } from '../utils/eventSchema';
+
+// Emit Event JSON-LD for the upcoming events surfaced on the homepage
+const homeEventSchemas = buildEventSchemas(events.filter(e => !e.recurring).slice(0, 4));
 ---
 
-<Layout title="Gridiron Brewing — Hampton, New Brunswick">
+<Layout
+  title="Gridiron Brewing — Hampton, New Brunswick"
+  description="Small-batch craft brewery and taproom in Hampton, NB. 12 beers on tap, patio on the Kennebecasis River, live music most weekends. 25 minutes from Saint John."
+>
+  <Fragment slot="head">
+    {homeEventSchemas.map(schema => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+  </Fragment>
+
   <Hero />
   <OnTap />
   <Taproom />
   <About />
   <Events />
-
   <InstagramFeed />
   <Community />
 </Layout>
-

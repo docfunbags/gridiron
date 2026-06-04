@@ -1,12 +1,12 @@
 ---
+import { TAP_COUNT } from '../utils/constants';
 ---
 
-<section class="hero grain" style="position:relative;overflow:hidden;">
-  <div style="position:absolute;inset:0;z-index:0;">
-    <img src="/assets/photos/crowded-bar.webp" alt="" aria-hidden="true" fetchpriority="high" loading="eager" decoding="async"
-      style="width:100%;height:100%;object-fit:cover;object-position:center 30%;opacity:0.38;" />
+<section class="hero grain">
+  <div class="hero-bg">
+    <img src="/assets/photos/crowded-bar.webp" alt="" aria-hidden="true" fetchpriority="high" loading="eager" decoding="async" />
   </div>
-  <div class="inner" style="position:relative;z-index:1;">
+  <div class="inner">
     <span class="kicker">Small-Batch Craft Beer · Hampton, NB</span>
     <h1>Cold Pints,<br /><span class="rust">Cozy Place.</span></h1>
     <p class="sub">Paddle in, hike down, or just pull up a chair.</p>
@@ -16,7 +16,7 @@
     </div>
     <div class="footstrip">
       <span>Open <b>Tue–Sun</b></span>
-      <span><b>12</b> Taps Flowing</span>
+      <span><b>{TAP_COUNT}</b> Taps Flowing</span>
       <span>Dog Friendly</span>
       <span>Patio on the River</span>
     </div>

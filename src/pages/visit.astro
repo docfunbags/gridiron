@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PhoneIcon from '../components/icons/PhoneIcon.astro';
+import MailIcon from '../components/icons/MailIcon.astro';
 
 const trucks = [
   {
@@ -36,9 +38,11 @@ const infoCards = [
     body: "A ramp provides access to the deck. Interior entry has a small lift — we're actively working to improve accessibility throughout. Give us a call ahead if you have questions and we'll do our best to help.",
   },
 ];
+
+const description = 'Visit Gridiron Brewing at 1051 Main Street, Hampton, NB. Twelve taps, food trucks on the patio, room for the whole crew — dogs and kids included.';
 ---
 
-<Layout title="Visit — Gridiron Brewing" activeNav="Visit">
+<Layout title="Visit — Gridiron Brewing" description={description} activeNav="Visit">
   <section class="page-hero grain">
     <span class="kicker">The Taproom · Hampton, NB</span>
     <h1>Come Visit</h1>
@@ -48,9 +52,9 @@ const infoCards = [
   <section class="band-dark">
     <div class="section visit-hours-grid">
       <div class="reveal">
-        <span class="kicker" style="color:var(--amber-bright);">Opening Hours</span>
-        <h2 class="display" style="font-size:clamp(34px,4.4vw,56px);margin:14px 0 6px;color:var(--cream);">When We're Pouring</h2>
-        <p class="mono" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-bright);margin-bottom:22px;">Summer Hours</p>
+        <span class="kicker kicker-amber-bright">Opening Hours</span>
+        <h2 class="display-cream-sm">When We're Pouring</h2>
+        <p class="summer-hours-label">Summer Hours</p>
         <table class="hours-table" id="hours">
           <tr><td>Monday</td><td class="closed">Closed</td></tr>
           <tr><td>Tuesday</td><td>4:00 PM — 8:00 PM</td></tr>
@@ -60,25 +64,19 @@ const infoCards = [
           <tr><td>Saturday</td><td>12:00 PM — 9:00 PM</td></tr>
           <tr><td>Sunday</td><td>12:00 PM — 7:00 PM</td></tr>
         </table>
-        <p class="mono" style="font-size:15px;letter-spacing:.06em;color:var(--cream);margin-top:18px;">Usually open on Holiday Mondays — check social media for updates.</p>
+        <p class="hours-note">Usually open on Holiday Mondays — check social media for updates.</p>
       </div>
       <div class="reveal d1">
-        <span class="kicker" style="color:var(--amber-bright);">Find Us</span>
-        <h2 class="display" style="font-size:clamp(34px,4.4vw,56px);margin:14px 0 26px;color:var(--cream);">The Address</h2>
-        <p style="font-family:'Anton', sans-serif;font-size:30px;line-height:1.05;text-transform:uppercase;color:var(--cream);">1051 Main Street<br />Hampton, New Brunswick</p>
-        <div style="margin-top:22px;display:flex;flex-direction:column;gap:12px;font-family:'DM Mono',monospace;font-size:14px;letter-spacing:.04em;color:var(--cream-muted);">
-          <span style="display:flex;align-items:center;gap:8px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/></svg>
-            (506) 832-4592
-          </span>
-          <span style="display:flex;align-items:center;gap:8px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            info@gridironbrewing.com
-          </span>
+        <span class="kicker kicker-amber-bright">Find Us</span>
+        <h2 class="display-cream-sm">The Address</h2>
+        <p class="visit-address">1051 Main Street<br />Hampton, New Brunswick</p>
+        <div class="visit-contact">
+          <span><PhoneIcon /> (506) 832-4592</span>
+          <span><MailIcon /> info@gridironbrewing.com</span>
         </div>
-        <div style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
+        <div class="visit-cta-row">
           <a class="btn btn-amber" href="#directions">Get Directions →</a>
-          <a class="btn btn-ghost" href="tel:+15068324592" style="color:var(--cream);">Call Ahead</a>
+          <a class="btn btn-ghost cream-ghost" href="tel:+15068324592">Call Ahead</a>
         </div>
       </div>
     </div>
@@ -91,23 +89,21 @@ const infoCards = [
       <p class="lead reveal d1">Twenty-five minutes from uptown Saint John, right where Main Street bends to meet the water. Easy to find, easier to stay.</p>
     </div>
     <div class="visit-directions-grid">
-      <div class="reveal" style="min-height:420px;border-radius:6px;overflow:hidden;border:1px solid var(--line);">
+      <div class="reveal map-frame">
         <iframe
           src="https://maps.google.com/maps?q=1051+Main+Street,+Hampton,+New+Brunswick,+Canada&t=k&output=embed"
           width="100%"
           height="420"
-          style="border:0;display:block;"
-          allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
           title="Gridiron Brewing — 1051 Main Street, Hampton, NB">
         </iframe>
       </div>
-      <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="info-stack">
         {infoCards.map((card, i) => (
-          <div class={`card reveal d${i + 1}`} style="background:var(--cream);border:1px solid var(--line);border-radius:6px;padding:24px;">
-            <h4 style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;">{card.title}</h4>
-            <p style="font-size:15px;color:var(--ink-2);line-height:1.6;">{card.body}</p>
+          <div class={`info-card reveal d${i + 1}`}>
+            <h4>{card.title}</h4>
+            <p>{card.body}</p>
           </div>
         ))}
       </div>
@@ -121,46 +117,50 @@ const infoCards = [
       <p class="lead reveal d1">We're lucky to have some great local vendors roll up on weekends through spring, summer, and early fall. Check our social media for who's on-site each week — and feel free to bring your own food from anywhere in Hampton while you sip something from our bar.</p>
     </div>
 
-    <div class="visit-food-grid" style="margin-bottom:48px;">
+    <div class="visit-food-grid food-grid-spacing">
       {trucks.map((t, i) => (
-        <div class={`card reveal${i > 0 ? ` d${i}` : ''}`} style="background:var(--cream);border:1px solid var(--line);border-radius:6px;overflow:hidden;">
-          <div style="aspect-ratio:4/3;overflow:hidden;">
-            <img src={t.image} alt={`${t.name} food truck`} width={t.width} height={t.height} style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" decoding="async" />
+        <div class={`food-card reveal${i > 0 ? ` d${i}` : ''}`}>
+          <div class="food-card-img">
+            <img src={t.image} alt={`${t.name} food truck`} width={t.width} height={t.height} loading="lazy" decoding="async" />
           </div>
-          <div style="padding:22px 24px;">
-            <h3 style="font-family:'Anton',sans-serif;font-weight:400;font-size:24px;text-transform:uppercase;margin:0 0 6px;">{t.name}</h3>
-            <p style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 12px;">{t.cuisine}</p>
-            <p style="font-size:14px;color:var(--ink-2);line-height:1.6;margin:0 0 16px;">{t.desc}</p>
-            <a href={t.fb} target="_blank" rel="noopener" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);text-decoration:none;">Follow on Facebook →</a>
+          <div class="food-card-body">
+            <h3>{t.name}</h3>
+            <p class="cuisine">{t.cuisine}</p>
+            <p>{t.desc}</p>
+            <a href={t.fb} target="_blank" rel="noopener" class="fb-link">Follow on Facebook →</a>
           </div>
         </div>
       ))}
     </div>
 
-    <div class="reveal" style="background:var(--ink);color:var(--cream);border-radius:6px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-      <p style="font-size:15px;line-height:1.6;margin:0;max-width:560px;color:rgba(250,243,228,.8);">
-        <b style="color:var(--cream);">Bring your own too.</b> We welcome outside food from local Hampton restaurants or home — just grab a cold one from our bar to go with it.
-      </p>
+    <div class="reveal byo-band">
+      <p><b>Bring your own too.</b> We welcome outside food from local Hampton restaurants or home — just grab a cold one from our bar to go with it.</p>
       <a href="https://www.instagram.com/gridironbrewing/" target="_blank" rel="noopener" class="btn btn-amber">Check Who's On This Week →</a>
     </div>
   </section>
 
   <section class="band-amber" id="private">
     <div class="section visit-private-grid">
-      <div class="reveal" style="aspect-ratio:4/3;border-radius:6px;overflow:hidden;">
-        <img src="/assets/photos/crowded-bar.webp" alt="Gridiron Brewing packed for an event" width="1016" height="773" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" decoding="async" />
+      <div class="reveal private-img">
+        <img src="/assets/photos/crowded-bar.webp" alt="Gridiron Brewing packed for an event" width="1016" height="773" loading="lazy" decoding="async" />
       </div>
       <div>
-        <span class="kicker reveal" style="color:var(--amber-deep);">Private Hire</span>
-        <h2 class="display reveal d1" style="font-size:clamp(36px,4.8vw,64px);margin:14px 0 18px;color:var(--ink-deep);line-height:0.92;">Book The<br />Back Room</h2>
-        <p class="reveal d1" style="font-size:17px;line-height:1.65;color:var(--ink-2);max-width:460px;">Birthdays, wakes, work dos, or just a Tuesday with forty of your closest friends. The back room seats 40, the patio holds more, and we'll build a beer flight around whatever you're celebrating.</p>
-        <div class="reveal d2" style="margin-top:28px;">
-          <a class="btn" href="mailto:info@gridironbrewing.com" style="background:var(--ink-deep);color:var(--cream);">Enquire About Events →</a>
+        <span class="kicker kicker-amber-deep reveal">Private Hire</span>
+        <h2 class="display-ink reveal d1">Book The<br />Back Room</h2>
+        <p class="body-on-amber reveal d1">Birthdays, wakes, work dos, or just a Tuesday with forty of your closest friends. The back room seats 40, the patio holds more, and we'll build a beer flight around whatever you're celebrating.</p>
+        <div class="stack-buttons reveal d2">
+          <a class="btn btn-ink-deep" href="mailto:info@gridironbrewing.com">Enquire About Events →</a>
         </div>
       </div>
     </div>
   </section>
 </Layout>
+
+<style>
+  .cream-ghost { color: var(--cream); }
+  .food-grid-spacing { margin-bottom: 48px; }
+  iframe { border: 0; display: block; }
+</style>
 
 <script>
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
