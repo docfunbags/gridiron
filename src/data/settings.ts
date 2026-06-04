@@ -8,6 +8,7 @@ export interface Schedule {
     isClosed: boolean;
     opens: string;
     closes: string;
+    showIsh: boolean;
   }[];
 }
 
@@ -18,7 +19,13 @@ export async function fetchActiveSchedule(): Promise<Schedule | null> {
         "active": activeSchedule-> {
           title,
           holidayNote,
-          days
+          days[] {
+            day,
+            isClosed,
+            opens,
+            closes,
+            showIsh
+          }
         }
       }
     `);

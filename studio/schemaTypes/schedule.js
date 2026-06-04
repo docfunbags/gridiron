@@ -41,6 +41,14 @@ export const schedule = {
             title: 'Closes', 
             type: 'string', 
             hidden: ({ parent }) => parent?.isClosed 
+          },
+          {
+            name: 'showIsh',
+            title: 'Add "ish"?',
+            type: 'boolean',
+            initialValue: false,
+            description: 'Appends "ish" to the closing time on the website (e.g. 9:00 PM \'ish) without affecting SEO.',
+            hidden: ({ parent }) => parent?.isClosed
           }
         ],
         preview: {
@@ -48,12 +56,13 @@ export const schedule = {
             title: 'day',
             closed: 'isClosed',
             opens: 'opens',
-            closes: 'closes'
+            closes: 'closes',
+            ish: 'showIsh'
           },
-          prepare({ title, closed, opens, closes }) {
+          prepare({ title, closed, opens, closes, ish }) {
             return {
               title: title,
-              subtitle: closed ? '🚫 Closed' : `⏰ ${opens} — ${closes}`
+              subtitle: closed ? '🚫 Closed' : `⏰ ${opens} — ${closes}${ish ? " 'ish" : ""}`
             }
           }
         }
