@@ -4,6 +4,14 @@ import InstagramIcon from './icons/InstagramIcon.astro';
 import FacebookIcon from './icons/FacebookIcon.astro';
 import UntappdIcon from './icons/UntappdIcon.astro';
 import { activeSchedule } from '../data/settings';
+
+function fmtTime(t: string | undefined, ish = false) {
+  if (!t) return '';
+  const parts = t.trim().split(' ');
+  const [hour, min] = parts[0].split(':');
+  const suffix = parts[1] === 'AM' ? 'am' : '';
+  return `${hour}${min !== '00' ? ':' + min : ''}${suffix}${ish ? 'ish' : ''}`;
+}
 ---
 
 <footer class="site-footer">
@@ -17,19 +25,19 @@ import { activeSchedule } from '../data/settings';
     <div class="foot-col">
       <h4>Visit</h4>
       <p>1051 Main Street<br />Hampton, New Brunswick</p>
+      <a href="tel:+15068324592">(506) 832-4592</a>
       {activeSchedule ? (
         <div class="foot-hours">
           {activeSchedule.days.map(h => (
             <p class="foot-hour-row">
               <span>{h.day.slice(0,3)}</span>
-              <b>{h.isClosed ? 'Closed' : h.closes.includes('PM') ? h.closes.split(':')[0] + (h.showIsh ? 'ish' : '') : h.closes}</b>
+              <b>{h.isClosed ? 'Closed' : `${fmtTime(h.opens)} – ${fmtTime(h.closes, h.showIsh)}`}</b>
             </p>
           ))}
         </div>
       ) : (
         <a href="/visit">Hours &amp; Directions</a>
       )}
-      <a href="tel:+15068324592">(506) 832-4592</a>
     </div>
     <div class="foot-col">
       <h4>Explore</h4>
