@@ -18,36 +18,36 @@ GitHub: https://github.com/docfunbags/gridiron.git (branch: `main`)
 
 **Before starting work:** always `git pull` first.
 
-**After making changes:** commit and push. Netlify detects the push and auto-deploys (1–2 min).
+**Code changes:** commit and push. Cloudflare Pages detects the push and auto-deploys (1–2 min). Per the user's gridiron push policy, do not push automatically — wait for explicit instruction.
+
+**Content changes:** edit in Sanity Studio at [gridiron-brewing.sanity.studio](https://gridiron-brewing.sanity.studio). A publish triggers a Cloudflare build via the configured webhook — no commits needed.
 
 ```
 git pull
-# ... make changes ...
+# ... make code changes ...
 git add <files>
 git commit -m "description"
-git push
+# wait for "push" before running git push
 ```
-
-If there's a merge conflict in `src/data/*/` files, resolve by keeping the correct content version and re-applying the code change.
 
 ---
 
 ## Content Management
 
-All content is stored as individual JSON files — edit them directly in the repo. Never hardcode content that belongs in these directories:
+All content lives in Sanity (project `1ox2c8va`, dataset `production`). The git-tracked JSON under `scripts/migration-source/` is the original migration source — read-only reference, not used at runtime.
 
-| Collection | Data Directory | Used By |
+| Collection | Sanity type | Used By |
 |---|---|---|
-| Beer List | `src/data/beers/*.json` | `beers.astro`, `OnTap.astro` |
-| Events | `src/data/events/*.json` | `events.astro`, `Events.astro` |
-| Community Photos | `src/data/community/*.json` | `gallery.astro`, `Community.astro` |
+| Beer List | `beer` | `beers.astro`, `OnTap.astro` |
+| Events | `event` | `events.astro`, `Events.astro` |
+| Community Photos | `communityPhoto` | `gallery.astro`, `Community.astro` |
 
-Data modules:
-- `src/data/beers.ts` — globs `beers/*.json`, computes `canBg` (gradient from `canColor`), exports `beers[]`
-- `src/data/events.ts` — globs `events/*.json`, sorts non-recurring chronologically then recurring, exports `events[]`
-- `src/data/community.ts` — globs `community/*.json`, exports `photos[]`
+Data modules (build-time GROQ via `@sanity/client`):
+- `src/data/beers.ts` — `*[_type == "beer"] | order(onTap desc, name asc)`, computes `canBg` gradient
+- `src/data/events.ts` — `*[_type == "event"] | order(recurring asc, calDate asc)`, resolves Sanity image URLs with width params
+- `src/data/community.ts` — `*[_type == "communityPhoto"] | order(_createdAt asc)`, returns `src` (~600px thumb) + `srcFull` (~1600px lightbox)
 
-Event slugs: non-recurring are date-prefixed (`2026-06-05-event-name.json`); recurring are title-slugified only.
+Required env: `SANITY_PROJECT_ID`, `SANITY_DATASET`. Set in `.env` locally and Cloudflare Pages env vars for builds. `src/lib/sanity.ts` throws a clear error if `SANITY_PROJECT_ID` is missing.
 
 ---
 
@@ -176,20 +176,17 @@ Follow the established modifier pattern — never invent new compound class name
 ---
 
 ### Image Workflow
-All images must be WebP before committing. Never commit raw PNGs or JPGs (except `logo-favicon.png`).
 
-1. Drop new images into the appropriate `public/assets/` subfolder
-2. Run `node scripts/optimize-images.mjs` — converts to WebP, resizes logos, deletes originals
-3. Update any `src` references to use `.webp`
+**Sanity-hosted images** (events, community photos): upload through Studio. The `img()` helper in `src/lib/sanity.ts` wraps `@sanity/image-url` so consumers get `?auto=format&w=…` URLs without thinking about it. Use width-appropriate variants (thumbnail vs. lightbox).
 
-**Social card image:** `og:image` and `twitter:image` in Layout.astro currently point to `crowded-bar.webp` as a fallback. Ideally replace with a dedicated 1200×628 branded image at `public/assets/logos/og-card.webp` when one is available.
+**Static images** under `public/assets/` (taproom interior, logos, food trucks): must be WebP before committing. Drop into the appropriate subfolder.
+
+**Social card image:** `og:image` and `twitter:image` default to `crowded-bar.webp`. Each page passes its own via the `ogImage` prop on `Layout.astro` (events page passes the next upcoming event's image).
 
 Naming conventions:
 - **Logos** — role-based: `logo-nav.webp`, `logo-hero.webp`, `logo-footer.webp`, `logo-favicon.png`
-- **Event images** — date-prefixed: `YYYY-MM-DD_slug.webp`
-- **Photos / food / community** — descriptive slug, no date prefix
-
-The `_unused/` folder lives at the project root (not in `public/`) so unused assets are not deployed.
+- **Event images** — uploaded to Sanity, file name irrelevant
+- **Static photos** — descriptive slug
 
 ---
 
@@ -230,34 +227,46 @@ Example: `feat: add auto-hide for past events`
 ```
 src/
   pages/
-    index.astro       — Homepage (imports all section components)
+    index.astro       — Homepage (imports all section components, emits Event JSON-LD)
     beers.astro       — Full tap list + drinks menu
+    events.astro      — Full events page with calendar links + structured data
+    gallery.astro     — Full community photo grid
     visit.astro       — Hours, address, food trucks, private hire
   components/
     Hero.astro        — Full-bleed hero with stats strip
-    OnTap.astro       — Homepage beer grid (reads beers.json, onTap:true)
+    OnTap.astro       — Homepage beer grid (Sanity beers where onTap:true)
     Taproom.astro     — Taproom description + CTA
     About.astro       — Story section with stats
-    Events.astro      — Upcoming events list (reads events.json)
-    InstagramFeed.astro — Social section
+    Events.astro      — Upcoming events list (homepage band)
+    InstagramFeed.astro — Lazy-loaded Behold widget
     Community.astro   — Cycling photo mosaic + community copy
-    Footer.astro      — Site footer
+    Footer.astro      — Site footer (uses icon components)
     Navbar.astro      — Sticky nav
+    Lightbox.astro    — Shared lightbox dialog (used by gallery, events, community)
+    BeerTag.astro     — Beer category tag
+    icons/            — Phone, Mail, Instagram, Facebook, Untappd SVG components
   data/
-    beers/*.json      — Beer entries (one file per beer)
-    beers.ts          — Globs beers/*.json, computes canBg
-    events/*.json     — Event entries (one file per event)
-    community/*.json  — Community photo entries
+    beers.ts          — Sanity GROQ → Beer[], onTap-first, computes canBg
+    events.ts         — Sanity GROQ → Event[], resolves image URLs (thumb + full)
+    community.ts      — Sanity GROQ → CommunityPhoto[] (src thumb + srcFull lightbox)
+  lib/
+    sanity.ts         — Sanity client + img() URL builder; throws on missing env
   styles/
-    global.css        — All design tokens, band classes, component styles
+    global.css        — Design tokens, band classes, utility classes, component styles
   layouts/
-    Layout.astro      — Base HTML shell, imports Navbar + Footer
+    Layout.astro      — Base HTML shell. Props: title, description, ogImage, activeNav
   utils/
-    lightbox.ts       — Shared lightbox open/close (focus management, aria-hidden, scroll lock)
-    constants.ts      — Shared constants: siteUrl — do not redeclare this inline anywhere
+    lightbox.ts       — bindLightbox(lbId, itemSelector, options) — wires up triggers + keyboard
+    eventSchema.ts    — buildEventSchemas, gcalUrl, icsUri (used by events.astro + index.astro)
+    reveal.ts         — IntersectionObserver for .reveal animations
+    constants.ts      — siteUrl, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, TAP_COUNT
 public/
-  assets/
-    photos/           — Community and general photos
-    logos/            — Gridiron logo variants
-    cans/             — Beer can images
+  _headers            — Cloudflare Pages CSP + cache headers
+  robots.txt          — Sitemap reference
+  assets/             — Static images (taproom, logos, food trucks)
+scripts/
+  migrate-to-sanity.mjs   — One-shot JSON → Sanity import (already executed)
+  backfill-images.mjs     — Uploads local images to Sanity (already executed)
+  migration-source/       — Read-only archive of the original JSON content
+studio/                   — Sanity Studio (separate sub-project, deployed to gridiron-brewing.sanity.studio)
 ```
