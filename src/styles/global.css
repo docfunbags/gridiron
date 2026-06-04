@@ -136,6 +136,8 @@ img { display: block; max-width: 100%; }
 .foot-col .foot-social svg { flex-shrink: 0; opacity: 0.65; transition: opacity .15s; }
 .foot-col .foot-social:hover svg { opacity: 1; }
 .foot-bottom { max-width: var(--maxw); margin: 48px auto 0; padding-top: 22px; border-top: 1px solid rgba(250,243,228,.14); display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgba(250,243,228,.5); }
+.foot-credit { color: rgba(250,243,228,.5); text-decoration: none; transition: color .15s; }
+.foot-credit:hover { color: rgba(250,243,228,.9); }
 
 /* ============================================================
    SECTIONS / LAYOUT
