@@ -129,7 +129,7 @@ img { display: block; max-width: 100%; }
 .foot-right { display: flex; flex-direction: column; }
 .foot-right-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
 .site-footer .brand { color: var(--cream); margin-bottom: 14px; }
-.site-footer .footlogo { height: 120px; width: auto; margin-bottom: 14px; }
+.site-footer .footlogo { height: 144px; width: auto; margin-bottom: 14px; }
 .foot-blurb { font-size: 14px; color: rgba(250,243,228,.6); max-width: 280px; line-height: 1.6; }
 .foot-col h4 { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--amber-bright); margin-bottom: 12px; }
 .foot-col a, .foot-col p { display: block; font-size: 14px; color: rgba(250,243,228,.78); text-decoration: none; margin-bottom: 7px; line-height: 1.5; }
