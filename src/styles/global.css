@@ -201,6 +201,7 @@ img { display: block; max-width: 100%; }
 .beer-can { height: 264px; display: flex; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid var(--line); }
 .beer-can .can { width: 108px; height: 192px; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 14px 12px; border: 1px solid rgba(33,23,17,.25); position: relative; overflow: hidden; }
 .beer-can .can .cn { font-family: 'Anton', sans-serif; font-size: 15px; text-transform: uppercase; letter-spacing: .04em; text-align: center; line-height: 1; padding: 0 8px; color: var(--ink-deep); mix-blend-mode: multiply; }
+.beer-can .can .cn-light { color: #e7d3a8; mix-blend-mode: normal; }
 .beer-can .can::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 30px; background: rgba(0,0,0,.12); }
 .beer-info { padding: 24px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .beer-info .style { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--amber); }

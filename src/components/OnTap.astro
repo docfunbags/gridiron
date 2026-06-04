@@ -22,12 +22,18 @@ const onTap = beers.filter(b => b.onTap && b.tag !== 'hidden');
             <p class="price-amount">$10</p>
           </div>
         </div>
-        <a class="btn btn-amber reveal d1" href="/beers">Full Tap List →</a>
       </div>
     </div>
     <div class="beer-grid">
       {onTap.map((beer, i) => (
-        <article class="beer-card reveal" style={`transition-delay:${Math.min(i,3) * 0.06}s`}>
+        <article
+          class="beer-card reveal"
+          style={`transition-delay:${Math.min(i,3) * 0.06}s`}
+          role="button"
+          tabindex="0"
+          aria-label={`View details for ${beer.name}`}
+          data-beer-idx={i}
+        >
           <div class="beer-info">
             <span class="style">{beer.style}</span>
             <h3>{beer.name}</h3>
@@ -46,3 +52,138 @@ const onTap = beers.filter(b => b.onTap && b.tag !== 'hidden');
     </div>
   </div>
 </section>
+
+<!-- Pre-rendered detail templates — cloned into modal at runtime -->
+{onTap.map((beer, i) => (
+  <template id={`bd-${i}`}>
+    <div class="beer-can" style="background:#e8d9b9;">
+      <div class="can" style={`background:${beer.canBg};`}>
+        <span class={`cn${beer.lightText ? ' cn-light' : ''}`}>
+          {beer.canLabel[0]}<br />{beer.canLabel[1]}
+        </span>
+      </div>
+    </div>
+    <div class="bm-info">
+      <span class="style">{beer.style}</span>
+      <h2 class="bm-name">{beer.name}</h2>
+      <p class="desc">{beer.desc}</p>
+      <div class="beer-specs">
+        <div class="spec"><span>ABV</span><b>{beer.abv}%</b></div>
+        <div class="spec"><span>IBU</span><b>{beer.ibu}</b></div>
+        <div class="tag-stack">
+          <BeerTag tag={beer.tag} />
+          <span class="tag ontap">On Tap</span>
+        </div>
+      </div>
+    </div>
+  </template>
+))}
+
+<!-- Beer detail modal -->
+<div id="beer-modal" class="bm-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Beer details">
+  <div class="bm-panel">
+    <button class="bm-close" aria-label="Close">&#x2715;</button>
+    <div class="bm-content"></div>
+  </div>
+</div>
+
+<style>
+  .beer-card { cursor: pointer; transition: transform .15s var(--ease), box-shadow .15s var(--ease); }
+  .beer-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px -6px rgba(0,0,0,.45); }
+  .beer-card:focus-visible { outline: 2px solid var(--amber-bright); outline-offset: 3px; border-radius: 6px; }
+
+  .bm-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,.82);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    cursor: zoom-out;
+  }
+  .bm-overlay.open { display: flex; }
+
+  .bm-panel {
+    background: var(--paper);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    overflow: hidden;
+    position: relative;
+    cursor: default;
+    box-shadow: 0 32px 80px rgba(0,0,0,.6);
+  }
+
+  .bm-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    background: rgba(0,0,0,.15);
+    border: none;
+    color: var(--ink);
+    font-size: 15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s;
+  }
+  .bm-close:hover { background: rgba(0,0,0,.28); }
+
+  .bm-info { padding: 20px 24px 26px; }
+  .bm-name { font-family: 'Anton', sans-serif; font-size: 30px; line-height: 1; text-transform: uppercase; color: var(--ink-deep); margin: 4px 0 12px; }
+
+  @media (max-width: 520px) {
+    .bm-overlay { padding: 16px; align-items: flex-end; }
+    .bm-panel { max-width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  }
+</style>
+
+<script>
+  const overlay = document.getElementById('beer-modal') as HTMLElement | null;
+  const content = overlay?.querySelector<HTMLElement>('.bm-content');
+  let lastFocus: HTMLElement | null = null;
+
+  function open(idx: number) {
+    const tpl = document.getElementById(`bd-${idx}`) as HTMLTemplateElement | null;
+    if (!tpl || !content || !overlay) return;
+    content.innerHTML = '';
+    content.appendChild(tpl.content.cloneNode(true));
+    lastFocus = document.activeElement as HTMLElement;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    overlay.querySelector<HTMLElement>('.bm-close')?.focus();
+  }
+
+  function close() {
+    if (!overlay) return;
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    lastFocus?.focus();
+    lastFocus = null;
+  }
+
+  document.querySelectorAll<HTMLElement>('.beer-card[data-beer-idx]').forEach(card => {
+    card.addEventListener('click', () => open(Number(card.dataset.beerIdx)));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        open(Number(card.dataset.beerIdx));
+      }
+    });
+  });
+
+  overlay?.addEventListener('click', e => { if (e.target === overlay) close(); });
+  overlay?.querySelector('.bm-close')?.addEventListener('click', close);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay?.classList.contains('open')) close();
+  });
+</script>
