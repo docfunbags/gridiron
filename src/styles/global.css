@@ -125,7 +125,7 @@ img { display: block; max-width: 100%; }
    FOOTER
    ============================================================ */
 .site-footer { background: var(--ink); color: var(--cream); padding: 64px 32px 32px; }
-.foot-inner { max-width: var(--maxw); margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; }
+.foot-inner { max-width: var(--maxw); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 40px; align-items: start; }
 .site-footer .brand { color: var(--cream); margin-bottom: 18px; }
 .site-footer .footlogo { height: 140px; width: auto; margin-bottom: 20px; }
 .foot-blurb { font-size: 14px; color: rgba(250,243,228,.6); max-width: 280px; line-height: 1.6; }
