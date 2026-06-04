@@ -1,4 +1,4 @@
-export default {
+export const schedule = {
   name: 'schedule',
   title: 'Operating Schedule',
   type: 'document',
