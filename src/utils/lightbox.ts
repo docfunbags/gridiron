@@ -21,13 +21,30 @@ export function bindLightbox(
 
   const items = Array.from(document.querySelectorAll<HTMLElement>(itemSelector));
   let current = 0;
+  let seq = 0; // guards against fast prev/next clicks racing decode()
 
-  function setSlide(index: number) {
+  async function setSlide(index: number) {
     if (items.length === 0) return;
     current = (index + items.length) % items.length;
     const item = items[current];
-    img!.src = item.getAttribute(srcAttr) || '';
-    img!.alt = item.getAttribute(altAttr) || '';
+    const src = item.getAttribute(srcAttr) || '';
+    const alt = item.getAttribute(altAttr) || '';
+
+    // Hide the previous frame before swapping src so the stale image never
+    // paints under the new URL while it's still decoding.
+    const mySeq = ++seq;
+    img!.style.opacity = '0';
+    img!.src = src;
+    img!.alt = alt;
+
+    try {
+      await img!.decode();
+    } catch {
+      // bad URL or interrupted — fall through and reveal anyway
+    }
+
+    // Only reveal if a newer click hasn't superseded this one
+    if (mySeq === seq) img!.style.opacity = '1';
   }
 
   function open(index: number) {
