@@ -2,8 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import PhoneIcon from '../components/icons/PhoneIcon.astro';
 import MailIcon from '../components/icons/MailIcon.astro';
+import { activeSchedule } from '../data/settings';
 
 const trucks = [
+// ... (trucks array remains same)
   {
     image: '/assets/food/sakura-hibachi.webp', width: 669, height: 486,
     name: 'Sakura Hibachi', cuisine: 'Japanese Cuisine',
@@ -54,17 +56,22 @@ const description = 'Visit Gridiron Brewing at 1051 Main Street, Hampton, NB. Tw
       <div class="reveal">
         <span class="kicker kicker-amber-bright">Opening Hours</span>
         <h2 class="display-cream-sm">When We're Pouring</h2>
-        <p class="summer-hours-label">Summer Hours</p>
-        <table class="hours-table" id="hours">
-          <tr><td>Monday</td><td class="closed">Closed</td></tr>
-          <tr><td>Tuesday</td><td>4:00 PM — 8:00 PM</td></tr>
-          <tr><td>Wednesday</td><td>4:00 PM — 8:00 PM</td></tr>
-          <tr><td>Thursday</td><td>12:00 PM — 8:00 PM</td></tr>
-          <tr><td>Friday</td><td>12:00 PM — 9:00 PM</td></tr>
-          <tr><td>Saturday</td><td>12:00 PM — 9:00 PM</td></tr>
-          <tr><td>Sunday</td><td>12:00 PM — 7:00 PM</td></tr>
-        </table>
-        <p class="hours-note">Usually open on Holiday Mondays — check social media for updates.</p>
+        {activeSchedule && (
+          <>
+            <p class="summer-hours-label">{activeSchedule.title}</p>
+            <table class="hours-table" id="hours">
+              {activeSchedule.days.map((h) => (
+                <tr>
+                  <td>{h.day}</td>
+                  <td class={h.isClosed ? "closed" : ""}>
+                    {h.isClosed ? "Closed" : `${h.opens} — ${h.closes}`}
+                  </td>
+                </tr>
+              ))}
+            </table>
+            <p class="hours-note">{activeSchedule.holidayNote}</p>
+          </>
+        )}
       </div>
       <div class="reveal d1">
         <span class="kicker kicker-amber-bright">Find Us</span>
