@@ -1,0 +1,53 @@
+---
+interface Props {
+  id: string;
+  withNav?: boolean;
+}
+const { id, withNav = false } = Astro.props;
+---
+
+<div id={id} class="lb" aria-hidden="true" role="dialog" aria-modal="true">
+  {withNav && <button class="lb-prev" data-lb-prev aria-label="Previous photo">&#8249;</button>}
+  <img class="lb-img" data-lb-img src="" alt="" />
+  {withNav && <button class="lb-next" data-lb-next aria-label="Next photo">&#8250;</button>}
+</div>
+
+<style>
+  .lb {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+    gap: 24px;
+  }
+  .lb.open { display: flex; }
+  .lb-img {
+    max-width: 92vw;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+  }
+  .lb-prev, .lb-next {
+    background: none;
+    border: none;
+    color: rgba(250, 243, 228, 0.6);
+    font-size: 56px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 12px;
+    transition: color 0.15s;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .lb-prev:hover, .lb-next:hover { color: var(--cream); }
+
+  @media (max-width: 520px) {
+    .lb-prev, .lb-next { font-size: 40px; padding: 0 6px; }
+    .lb-img { max-width: 92vw; }
+  }
+</style>

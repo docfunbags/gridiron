@@ -1,10 +1,8 @@
 ---
-interface Props { tag: 'flagship' | 'seasonal' | 'guest' | 'hidden'; }
+import type { Beer } from '../data/beers';
+interface Props { tag: Beer['tag']; }
 const { tag } = Astro.props;
-if (tag === 'hidden') return;
-const labelMap: Record<string, string> = { seasonal: 'Seasonal', guest: 'Guest', flagship: 'Flagship' };
-const clsMap:   Record<string, string> = { seasonal: ' seasonal', guest: ' guest', flagship: '' };
-const label = labelMap[tag] ?? 'Flagship';
-const cls   = clsMap[tag]  ?? '';
+const labelMap = { flagship: 'Flagship', seasonal: 'Seasonal', guest: 'Guest', hidden: '' } as const;
+const clsMap   = { flagship: '',         seasonal: ' seasonal', guest: ' guest', hidden: ''  } as const;
 ---
-<span class={`tag${cls}`}>{label}</span>
+{tag !== 'hidden' && <span class={`tag${clsMap[tag]}`}>{labelMap[tag]}</span>}

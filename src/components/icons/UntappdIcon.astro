@@ -1,0 +1,8 @@
+---
+interface Props { size?: number; }
+const { size = 15 } = Astro.props;
+---
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M12 2L9.5 4.5H6V8L3.5 10.5 6 13V16.5h3.5L12 19l2.5-2.5H18V13l2.5-2.5L18 8V4.5h-3.5L12 2z"/>
+  <polyline points="9 10.5 11 12.5 15 8.5"/>
+</svg>
