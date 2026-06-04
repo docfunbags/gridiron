@@ -85,7 +85,10 @@ function fmtTime(t: string | undefined, ish = false) {
   <div class="foot-bottom">
     <span>© 2026 Gridiron Brewing</span>
     <span>Please drink responsibly · 19+</span>
-    <span>Built by <a href="https://www.fundyforge.ca" target="_blank" rel="noopener" class="foot-credit">Fundy Forge</a></span>
+    <a href="https://www.fundyforge.ca" target="_blank" rel="noopener" class="foot-credit">
+      <img src="/assets/logos/fundyforge-mark.svg" alt="Fundy Forge" class="foot-credit-icon" />
+      Fundy Forge
+    </a>
   </div>
 </footer>
 
@@ -94,6 +97,7 @@ function fmtTime(t: string | undefined, ish = false) {
   .foot-contact p, .foot-contact a { display: block; font-size: 14px; color: var(--cream); text-decoration: none; margin-bottom: 9px; line-height: 1.5; }
   .foot-contact a:hover { color: var(--amber-bright); }
   .foot-tagline { font-size: 14px; color: rgba(250,243,228,.6); line-height: 1.6; margin: 24px 0 0; }
+  .foot-credit-icon { display: inline-block; height: 20px; width: auto; vertical-align: middle; margin-right: 6px; opacity: 1; }
   .foot-hour-row { display: flex; justify-content: space-between; gap: 12px; max-width: 160px; }
   .foot-hour-row b { color: inherit; font-weight: 400; }
 </style>
