@@ -17,6 +17,8 @@
   --line: rgba(33, 23, 17, 0.16);
   --cream-dim:   rgba(250, 243, 228, 0.74);
   --cream-muted: rgba(250, 243, 228, 0.82);
+  --cream-faint: rgba(250, 243, 228, 0.50);
+  --cream-hover: rgba(250, 243, 228, 0.10);
   --tag-guest-bg: #2a5c8a;
   --tag-guest-fg: #d4eaf7;
   --tag-ontap-bg: #2a6e3f;
@@ -137,8 +139,8 @@ img { display: block; max-width: 100%; }
 .foot-col .foot-social { display: flex; align-items: center; gap: 8px; }
 .foot-col .foot-social svg { flex-shrink: 0; opacity: 0.65; transition: opacity .15s; }
 .foot-col .foot-social:hover svg { opacity: 1; }
-.foot-bottom { max-width: var(--maxw); margin: 36px auto 0; padding-top: 18px; border-top: 1px solid rgba(250,243,228,.14); display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgba(250,243,228,.5); }
-.foot-credit { color: rgba(250,243,228,.5); text-decoration: none; transition: color .15s; }
+.foot-bottom { max-width: var(--maxw); margin: 36px auto 0; padding-top: 18px; border-top: 1px solid rgba(250,243,228,.14); display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream-faint); }
+.foot-credit { color: var(--cream-faint); text-decoration: none; transition: color .15s; }
 .foot-credit:hover { color: rgba(250,243,228,.9); }
 
 /* ============================================================
@@ -154,7 +156,7 @@ img { display: block; max-width: 100%; }
 .band-dark .section-head h2 { color: var(--cream); }
 .band-dark .kicker { color: var(--amber-bright); }
 .band-dark .btn-ghost { color: var(--cream); border-color: var(--cream); }
-.band-dark .btn-ghost:hover { background: rgba(250,243,228,.1); color: var(--cream); border-color: var(--cream); }
+.band-dark .btn-ghost:hover { background: var(--cream-hover); color: var(--cream); border-color: var(--cream); }
 .band-amber { background: var(--amber); color: var(--ink-deep); }
 .band-amber .btn-ghost { border-color: var(--ink); color: var(--ink); }
 .band-amber .btn-ghost:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
@@ -188,7 +190,7 @@ img { display: block; max-width: 100%; }
 .hero .sub { max-width: 560px; font-size: 18px; font-weight: 500; line-height: 1.6; color: rgba(250,243,228,.88); margin: 24px 0 32px; text-shadow: 0 1px 10px rgba(0,0,0,.55); }
 .hero .cta { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
 .hero .btn-ghost { color: var(--cream); background: rgba(0,0,0,.18); }
-.hero .btn-ghost:hover { background: rgba(250,243,228,.12); border-color: var(--cream); color: var(--cream); }
+.hero .btn-ghost:hover { background: var(--cream-hover); border-color: var(--cream); color: var(--cream); }
 .hero .footstrip { margin-top: 52px; display: flex; gap: 14px 40px; flex-wrap: wrap; justify-content: center; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(250,243,228,.78); text-shadow: 0 1px 6px rgba(0,0,0,.5); }
 .hero .footstrip b { color: var(--amber-bright); }
 .hero .footstrip span { display: inline-flex; align-items: center; gap: 8px; }
