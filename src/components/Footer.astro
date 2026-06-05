@@ -108,7 +108,7 @@ function fmtTime(t: string | undefined, ish = false) {
 
 <script>
   const today = new Intl.DateTimeFormat('en-CA', { weekday: 'long', timeZone: 'America/Moncton' }).format(new Date());
-  document.querySelectorAll<HTMLElement>('.foot-hour-row[data-day]').forEach(row => {
-    if (row.dataset.day === today) row.classList.add('today');
+  document.querySelectorAll('.foot-hour-row[data-day]').forEach(row => {
+    if (row.getAttribute('data-day') === today) row.classList.add('today');
   });
 </script>
