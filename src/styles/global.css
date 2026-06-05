@@ -62,8 +62,8 @@ img { display: block; max-width: 100%; }
 .section-cta-tight .cta-lead { font-size: 17px; color: var(--cream-dim); max-width: 480px; margin: 0 auto 32px; line-height: 1.6; }
 
 /* ---------- generic body lead helpers ---------- */
-.body-on-ink    { font-size: 18px; line-height: 1.65; color: var(--ink-2); max-width: 480px; }
-.body-on-amber  { font-size: 17px; line-height: 1.65; color: var(--ink-2); max-width: 460px; }
+.body-on-ink    { font-size: 18px; line-height: 1.65; color: var(--ink-2); max-width: 480px; margin-bottom: 16px; }
+.body-on-amber  { font-size: 17px; line-height: 1.65; color: var(--ink-2); max-width: 460px; margin-bottom: 16px; }
 .body-on-cream-dim { font-size: 16px; line-height: 1.65; color: var(--cream-dim); max-width: 320px; margin-bottom: 24px; }
 
 /* ---------- spacing helpers ---------- */
