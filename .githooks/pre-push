@@ -1,5 +1,5 @@
 #!/bin/sh
-# Gemini pre-push review — informational only, never blocks the push.
+# Gemini pre-push review — blocks push if issues are flagged.
 # Requires: Gemini CLI installed and authenticated.
 
 STAT=$(git diff origin/main...HEAD --stat 2>/dev/null)
@@ -15,8 +15,9 @@ echo "  Gemini pre-push review"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-{
-  cat <<'PROMPT'
+REVIEW=$(
+  {
+    cat <<'PROMPT'
 You are reviewing a git diff for the Gridiron Brewing website — a static Astro site with
 Sanity CMS, deployed to Cloudflare Pages. The site is for a craft brewery taproom in
 Hampton, New Brunswick. Design tokens live in src/styles/global.css. Fonts: Anton
@@ -34,15 +35,27 @@ If nothing is wrong, say so in one line.
 
 Files changed:
 PROMPT
-  git diff origin/main...HEAD --stat
-  echo ""
-  echo "Full diff:"
-  git diff origin/main...HEAD
-} | gemini -m pro
+    git diff origin/main...HEAD --stat
+    echo ""
+    echo "Full diff:"
+    git diff origin/main...HEAD
+  } | gemini -m pro 2>&1
+)
 
+echo "$REVIEW"
 echo ""
+
+# If Gemini returned bullet-point issues (lines starting with * or •), block the push
+if echo "$REVIEW" | grep -qE '^\* |^\*   |^• '; then
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "  ✗  Push blocked — review the issues above, fix, then re-run: git push"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo ""
+  exit 1
+fi
+
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  Push proceeding. Review above before Cloudflare deploys."
+echo "  ✓  All clear — push proceeding."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
