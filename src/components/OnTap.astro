@@ -59,7 +59,7 @@ const onTap = beers.filter(b => b.onTap && b.tag !== 'hidden');
 <div class="bm-templates" aria-hidden="true">
   {onTap.map((beer, i) => (
     <div id={`bd-${i}`}>
-      <div class="beer-can" style="background:#e8d9b9;">
+      <div class="beer-can" style="background:var(--paper-2);">
         <div class="can" style={`background:${beer.canBg};`}>
           <span class={`cn${beer.lightText ? ' cn-light' : ''}`}>
             {beer.canLabel[0]}<br />{beer.canLabel[1]}

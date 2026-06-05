@@ -57,7 +57,7 @@ const description = 'Twelve taps always flowing — six flagship brews plus rota
         <div class="beer-grid" data-tap-grid>
           {beers.map((beer) => (
             <article class={`beer-card${!beer.onTap ? ' off-tap' : ''}`} data-style={beer.styleCat} data-abv={beer.abv} data-ontap={beer.onTap}>
-              <div class="beer-can" style="background:#e8d9b9;">
+              <div class="beer-can" style="background:var(--paper-2);">
                 <div class="can" style={`background:${beer.canBg};`}>
                   <span class={`cn${beer.lightText ? ' cn-light' : ''}`}>
                     {beer.canLabel[0]}<br />{beer.canLabel[1]}

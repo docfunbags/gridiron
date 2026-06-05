@@ -98,15 +98,16 @@ function fmtTime(t: string | undefined, ish = false) {
   .foot-contact a:hover { color: var(--amber-bright); }
   .foot-tagline { font-size: 14px; color: rgba(250,243,228,.6); line-height: 1.6; margin: 24px 0 0; }
   .foot-credit-icon { display: inline-block; height: 20px; width: auto; vertical-align: middle; margin-right: 6px; opacity: 1; }
-  .foot-hour-row { display: flex; justify-content: space-between; gap: 12px; max-width: 160px; }
+  .foot-hours { padding-left: 14px; }
+  .foot-hour-row { display: flex; justify-content: space-between; gap: 12px; max-width: 160px; position: relative; }
   .foot-hour-row b { color: inherit; font-weight: 400; }
   .foot-hour-row.today span { color: var(--amber-bright); font-weight: 700; }
-  .foot-hour-row.today span::before { content: "▸ "; }
+  .foot-hour-row.today::before { content: "▸" / ""; position: absolute; left: -14px; color: var(--amber-bright); }
   .foot-hour-row.today b { color: var(--cream); }
 </style>
 
 <script>
-  const today = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+  const today = new Intl.DateTimeFormat('en-CA', { weekday: 'long', timeZone: 'America/Moncton' }).format(new Date());
   document.querySelectorAll<HTMLElement>('.foot-hour-row[data-day]').forEach(row => {
     if (row.dataset.day === today) row.classList.add('today');
   });

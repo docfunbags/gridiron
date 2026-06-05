@@ -271,7 +271,7 @@ img { display: block; max-width: 100%; }
 .hours-table tr.today { background: rgba(193,122,43,0.08); }
 .hours-table tr.today td { color: var(--cream); }
 .hours-table tr.today td:first-child { color: var(--amber-bright); font-weight: 700; }
-.hours-table tr.today td:first-child::before { content: "▸ "; }
+.hours-table tr.today td:first-child::before { content: "▸ " / ""; }
 .hours-table .closed { color: rgba(250,243,228,.35) !important; font-weight: 400; }
 
 /* ============================================================

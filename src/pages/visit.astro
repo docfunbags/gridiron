@@ -177,8 +177,7 @@ const description = 'Visit Gridiron Brewing at 1051 Main Street, Hampton, NB. Tw
 </style>
 
 <script>
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const today = days[new Date().getDay()];
+  const today = new Intl.DateTimeFormat('en-CA', { weekday: 'long', timeZone: 'America/Moncton' }).format(new Date());
   document.querySelectorAll('#hours tr').forEach((tr) => {
     const first = tr.firstElementChild;
     if (first && first.textContent?.trim() === today) tr.classList.add('today');

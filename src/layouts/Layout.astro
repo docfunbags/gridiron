@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { siteUrl, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from '../utils/constants';
+import { activeSchedule } from '../data/settings';
 import type { Schedule } from '../data/settings';
 
 interface Props {
@@ -18,7 +19,7 @@ const {
   description = DEFAULT_DESCRIPTION,
   ogImage = DEFAULT_OG_IMAGE,
   activeNav,
-  hours,
+  hours = activeSchedule,
 } = Astro.props;
 
 // Helper to convert "4:00 PM" to "16:00" for Schema.org
@@ -36,14 +37,7 @@ const openingHours = hours?.days.map(h => ({
   dayOfWeek: h.day,
   opens: h.isClosed ? '00:00' : to24h(h.opens),
   closes: h.isClosed ? '00:00' : to24h(h.closes),
-})) || [
-  { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday',   opens: '16:00', closes: '20:00' },
-  { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Wednesday', opens: '16:00', closes: '20:00' },
-  { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Thursday',  opens: '12:00', closes: '20:00' },
-  { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday',    opens: '12:00', closes: '21:00' },
-  { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday',  opens: '12:00', closes: '21:00' },
-  { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Sunday',    opens: '12:00', closes: '19:00' },
-];
+})) ?? [];
 
 const localBusiness = {
   '@context': 'https://schema.org',
