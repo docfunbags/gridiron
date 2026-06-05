@@ -33,7 +33,7 @@ function fmtTime(t: string | undefined, ish = false) {
       {activeSchedule ? (
         <div class="foot-hours">
           {activeSchedule.days.map(h => (
-            <p class="foot-hour-row">
+            <p class="foot-hour-row" data-day={h.day}>
               <span>{h.day.slice(0,3)}</span>
               <b>{h.isClosed ? 'Closed' : `${fmtTime(h.opens)} – ${fmtTime(h.closes, h.showIsh)}`}</b>
             </p>
@@ -100,4 +100,14 @@ function fmtTime(t: string | undefined, ish = false) {
   .foot-credit-icon { display: inline-block; height: 20px; width: auto; vertical-align: middle; margin-right: 6px; opacity: 1; }
   .foot-hour-row { display: flex; justify-content: space-between; gap: 12px; max-width: 160px; }
   .foot-hour-row b { color: inherit; font-weight: 400; }
+  .foot-hour-row.today span { color: var(--amber-bright); font-weight: 700; }
+  .foot-hour-row.today span::before { content: "▸ "; }
+  .foot-hour-row.today b { color: var(--cream); }
 </style>
+
+<script>
+  const today = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+  document.querySelectorAll<HTMLElement>('.foot-hour-row[data-day]').forEach(row => {
+    if (row.dataset.day === today) row.classList.add('today');
+  });
+</script>
