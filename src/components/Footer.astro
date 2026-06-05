@@ -102,11 +102,11 @@ function fmtTime(t: string | undefined, ish = false) {
   .foot-hour-row { display: flex; justify-content: space-between; gap: 12px; max-width: 160px; position: relative; }
   .foot-hour-row b { color: inherit; font-weight: 400; }
   .foot-hour-row.today span { color: var(--amber-bright); font-weight: 700; }
-  .foot-hour-row.today::before { content: "▸" / ""; position: absolute; left: -14px; color: var(--amber-bright); }
+  .foot-hour-row.today::before { content: "▸"; content: "▸" / ""; position: absolute; left: -14px; color: var(--amber-bright); }
   .foot-hour-row.today b { color: var(--cream); }
 </style>
 
-<script>
+<script lang="ts">
   const today = new Intl.DateTimeFormat('en-CA', { weekday: 'long', timeZone: 'America/Moncton' }).format(new Date());
   document.querySelectorAll<HTMLElement>('.foot-hour-row[data-day]').forEach(row => {
     if (row.dataset.day === today) row.classList.add('today');
