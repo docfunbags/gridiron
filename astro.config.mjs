@@ -5,7 +5,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://gridironbrewing.com',
   output: 'static',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap(),
+  ],
   build: {
     inlineStylesheets: 'always',
   },
